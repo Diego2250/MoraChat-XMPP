@@ -41,7 +41,7 @@
             this.btLogin.Depth = 0;
             this.btLogin.HighEmphasis = true;
             this.btLogin.Icon = null;
-            this.btLogin.Location = new System.Drawing.Point(257, 295);
+            this.btLogin.Location = new System.Drawing.Point(324, 291);
             this.btLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btLogin.MouseState = MaterialSkin.MouseState.HOVER;
             this.btLogin.Name = "btLogin";
@@ -64,7 +64,7 @@
             this.tbUser.HideSelection = true;
             this.tbUser.Hint = "Usuario";
             this.tbUser.LeadingIcon = null;
-            this.tbUser.Location = new System.Drawing.Point(212, 139);
+            this.tbUser.Location = new System.Drawing.Point(214, 139);
             this.tbUser.MaxLength = 32767;
             this.tbUser.MouseState = MaterialSkin.MouseState.OUT;
             this.tbUser.Name = "tbUser";
@@ -75,7 +75,7 @@
             this.tbUser.SelectionLength = 0;
             this.tbUser.SelectionStart = 0;
             this.tbUser.ShortcutsEnabled = true;
-            this.tbUser.Size = new System.Drawing.Size(250, 48);
+            this.tbUser.Size = new System.Drawing.Size(372, 48);
             this.tbUser.TabIndex = 1;
             this.tbUser.TabStop = false;
             this.tbUser.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -92,7 +92,7 @@
             this.tbPassword.HideSelection = true;
             this.tbPassword.Hint = "Contraseña";
             this.tbPassword.LeadingIcon = null;
-            this.tbPassword.Location = new System.Drawing.Point(212, 205);
+            this.tbPassword.Location = new System.Drawing.Point(214, 205);
             this.tbPassword.MaxLength = 32767;
             this.tbPassword.MouseState = MaterialSkin.MouseState.OUT;
             this.tbPassword.Name = "tbPassword";
@@ -104,7 +104,7 @@
             this.tbPassword.SelectionLength = 0;
             this.tbPassword.SelectionStart = 0;
             this.tbPassword.ShortcutsEnabled = true;
-            this.tbPassword.Size = new System.Drawing.Size(250, 48);
+            this.tbPassword.Size = new System.Drawing.Size(372, 48);
             this.tbPassword.TabIndex = 2;
             this.tbPassword.TabStop = false;
             this.tbPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -113,13 +113,17 @@
             // 
             // Form1
             // 
+            this.AcceptButton = this.btLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.tbUser);
             this.Controls.Add(this.btLogin);
+            this.FormStyle = MaterialSkin.Controls.MaterialForm.FormStyles.ActionBar_None;
             this.Name = "Form1";
+            this.Padding = new System.Windows.Forms.Padding(3, 24, 3, 3);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MoraChat";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
