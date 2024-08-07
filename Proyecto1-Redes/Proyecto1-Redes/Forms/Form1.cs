@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
@@ -22,6 +23,7 @@ namespace Proyecto1_Redes
 {
     public partial class Form1 : MaterialSkin.Controls.MaterialForm
     {
+        public SessionState SessionState;
         public Form1()
         {
             InitializeComponent();
@@ -95,7 +97,7 @@ namespace Proyecto1_Redes
             }
             catch (XmppDotNet.RegisterException e)
             {
-                MessageBox.Show($"Error while creating account: {e.Message}");
+                MessageBox.Show($"Error while creating account: {e.Stanza.LastNode.ToString()}");
             }
 
             return;
@@ -118,14 +120,30 @@ namespace Proyecto1_Redes
                 Password = password
             };
 
+            xmppClient
+                .StateChanged
+                .Where(s => s == SessionState.Binded)
+                .Subscribe(async v =>
+                {
+                    var roster = await xmppClient.RequestRosterAsync();
+                    //MessageBox.Show(roster.ToString());
+                    await xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.Chat, "Ready to chat");
+                });
+
+
             try
             {
+                
+
                 await xmppClient.ConnectAsync();
                 MessageBox.Show("Connection Successful!");
+                MoraChat frmChat = new MoraChat(xmppClient);
+                frmChat.Show();
+                this.Hide();
             }
-            catch (Exception ex)
+            catch (XmppException ex)
             {
-                MessageBox.Show($"Error while connecting: {ex.Message}");
+                MessageBox.Show($"Error while connecting: {ex.Stanza}");
             }
 
             return;
