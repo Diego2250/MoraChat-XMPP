@@ -16,5 +16,18 @@ namespace Proyecto1_Redes.Forms
         {
             InitializeComponent();
         }
+
+        private void label1_Paint(object sender, PaintEventArgs e)
+        {
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddEllipse(0, 0, lbInitial.Width, lbInitial.Height);
+
+            this.lbInitial.Region = new Region(path);
+        }
+
+        private void frmChatCard_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
