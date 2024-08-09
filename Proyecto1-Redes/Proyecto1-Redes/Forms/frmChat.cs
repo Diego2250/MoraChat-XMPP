@@ -21,7 +21,6 @@ using XmppDotNet.Xmpp.MessageArchiveManagement;
 using XmppDotNet.Xmpp.ResultSetManagement;
 using XmppDotNet.Xmpp.Roster;
 using XmppDotNet.Xmpp.XData;
-using XmppDotNet.Xmpp.Client;
 using XmppDotNet.Xmpp.Base;
 using Iq = XmppDotNet.Xmpp.Base.Iq;
 using RosterItem = XmppDotNet.Xmpp.Roster.RosterItem;
@@ -80,89 +79,10 @@ namespace Proyecto1_Redes.Forms
 
         }
 
-        public async Task<MamResult> RequestLastChatMessagesFromArchive(
-        XmppClient xmppClient,
-        string jid,
-        int maxResults
-        )
-        {
-            // build the MAM query
-            var mamQuery = new IqQuery<MessageArchive>
-            {
-                Type = IqType.Set,
-                Query =
-                {
-                    QueryId = Guid.NewGuid().ToString(),
-                    XData = new Data
-                    {
-                        Type = FormType.Submit,
-                        Fields = new[]
-                        {
-                            new Field
-                            {
-                                Var = "FORM_TYPE",
-                                Type = FieldType.Hidden,
-                                Values = new[] {Namespaces.MessageArchiveManagement}
-                            },
-                            new Field
-                            {
-                                Var = "with",
-                                Values = new[] {jid}
-                            }
-                        }
-                    },
-                    ResultSet = new Set
-                    {
-                        Max = maxResults
-                    }
-                }
-            };
-
-            var messages = new List<XmppDotNet.Xmpp.Base.Message>();
-
-            // set up message subscription
-            // we look for messages that:
-            // * match our query id
-            // * are a MAM result messages
-            // * are sent from us or the Jid we query for
-            try
-            {
-
-            
-                var messageSubscription = xmppClient
-                .XmppXElementReceived
-                .Where(el => el is Message msg
-                             && msg.IsMamResult == true
-                             && msg.MamResult.QueryId == mamQuery.Query.QueryId
-                             
-                )
-                .Select(el => ((XmppDotNet.Xmpp.Base.Message)el).MamResult)
-                .Subscribe(result =>
-                {
-                    messages.Add(result.Forwarded.Message);
-                });
-
-
-            var resIq = await xmppClient.SendIqAsync(mamQuery);
-
-            // dispose the subscription
-            messageSubscription.Dispose();
-
-            // return iq result and messages in the MamResult object
-            return MamResult
-                .FromIq(resIq)
-                .WithMessages(messages);
-            }
-            catch (XmppException e)
-            {
-                MessageBox.Show(e.Stanza.Value);
-                return null;
-            }
-        }
+        
 
         private async void frmChat_Load(object sender, EventArgs e)
         {
-            var mamResult = await RequestLastChatMessagesFromArchive(xmppClient, xmppClient.Jid, 10);
             // request the roster from the server
             var rosterIqResult = await xmppClient.RequestRosterAsync();
 
@@ -209,18 +129,29 @@ namespace Proyecto1_Redes.Forms
         {
             try
             {
-                String user = tbUserSM.Text + "@alumchat.lol";
+                string user = "";
+                if (swGroupChatSM.Checked)
+                {
+                    user = tbUserSM.Text;
+
+                }
+                else
+                {
+                    user = tbUserSM.Text + "@alumchat.lol";
+                }
+
                 String message = tbMessageSM.Text;
                 if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(message))
                 {
                     MessageBox.Show("Enter a username and message");
                     return;
                 }
-                // send a chat message to user2
+                // send a chat message
                 await xmppClient.SendChatMessageAsync(user, message);
                 MessageBox.Show("Message sent");
                 tbUserSM.Text = "";
                 tbMessageSM.Text = "";
+
             }
             catch (XmppException ex)
             {
@@ -245,19 +176,41 @@ namespace Proyecto1_Redes.Forms
 
         }
 
-        private void tcChat_SelectedIndexChanged(object sender, EventArgs e)
+        private async void tcChat_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tcChat.SelectedTab == tabDM)
             {
             }
-            else if (tcChat.SelectedTab == tabContacts)
+            else if (tcChat.SelectedTab == tabChats)
             {
             }
             else if (tcChat.SelectedTab == tabProfile)
             {
-                MessageBox.Show("Siuuuuuuuuuu");
+                // construct the iq query
+                var vcardRequest = new VcardIq { Type = IqType.Get, To = xmppClient.Jid };
+
+                // send the request and await the response
+                var resultIq = await xmppClient.SendIqAsync(vcardRequest);
+
+                
+                // check for success or failure
+                if (resultIq.Type == IqType.Result)
+                {
+                    // server returned a result (sucsess)
+                    // => process the vCard here
+                }
+                else if (resultIq.Type == IqType.Error)
+                {
+                    // server returned an error
+                    // => handle error
+                }
 
             }
+        }
+
+        private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
