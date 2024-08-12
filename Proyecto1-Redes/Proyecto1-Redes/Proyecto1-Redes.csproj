@@ -136,11 +136,11 @@
     <Compile Include="Forms\frmChat.Designer.cs">
       <DependentUpon>frmChat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmChatCard.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Forms\crlChatCard.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\frmChatCard.Designer.cs">
-      <DependentUpon>frmChatCard.cs</DependentUpon>
+    <Compile Include="Forms\crlChatCard.Designer.cs">
+      <DependentUpon>crlChatCard.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -153,8 +153,8 @@
     <EmbeddedResource Include="Forms\frmChat.resx">
       <DependentUpon>frmChat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmChatCard.resx">
-      <DependentUpon>frmChatCard.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\crlChatCard.resx">
+      <DependentUpon>crlChatCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
