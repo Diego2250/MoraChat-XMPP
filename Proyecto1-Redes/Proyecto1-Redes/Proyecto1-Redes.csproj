@@ -39,6 +39,9 @@
     <Reference Include="MaterialSkin, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialSkin.2.2.3.1\lib\net48\MaterialSkin.dll</HintPath>
     </Reference>
+    <Reference Include="Matrix, Version=2.1.0.8, Culture=neutral, PublicKeyToken=0120f1df71ff86bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\MatriX.2.1.0.8\lib\net45\Matrix.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -117,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\MamResult.cs" />
+    <Compile Include="Classes\MucManager.cs" />
     <Compile Include="Forms\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>

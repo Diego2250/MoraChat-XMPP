@@ -12,8 +12,18 @@ namespace Proyecto1_Redes.Forms
 {
     public partial class crlChatCard : UserControl
     {
-        string UserName;
-        string LastMessage;
+        public string UserName { get; set; }
+
+        private string _lastMessage;
+        public string LastMessage
+        {
+            get => _lastMessage;
+            set
+            {
+                _lastMessage = value;
+                lblLastMessage.Text = value;
+            }
+        }
         public crlChatCard(String UserName, string LastMessage)
         {
             InitializeComponent();
@@ -25,6 +35,7 @@ namespace Proyecto1_Redes.Forms
         {
             lblLastMessage.Text = LastMessage;
             lblUserName.Text = UserName;
+
         }
 
         private void lbInitial_Paint(object sender, PaintEventArgs e)
@@ -34,6 +45,56 @@ namespace Proyecto1_Redes.Forms
             path.AddEllipse(0, 0, lbInitial.Width, lbInitial.Height);
 
             this.lbInitial.Region = new Region(path);
+        }
+
+        private void crlChatCard_MouseEnter(object sender, EventArgs e)
+        {
+            // Cambiar el color de fondo y borde cuando el mouse entra
+            this.BorderStyle = BorderStyle.FixedSingle;
+
+            // Opcional: puedes animar una transición
+            var animationTimer = new Timer();
+            animationTimer.Interval = 10; // Tiempo entre cada frame de la animación
+            int steps = 10;
+            int currentStep = 0;
+
+            animationTimer.Tick += (s, args) =>
+            {
+                currentStep++;
+                this.Height += 2;
+
+                if (currentStep >= steps)
+                {
+                    animationTimer.Stop();
+                    animationTimer.Dispose();
+                }
+            };
+            animationTimer.Start();
+        }
+
+        private void crlChatCard_MouseLeave(object sender, EventArgs e)
+        {
+            // Restaurar el color de fondo y borde cuando el mouse sale
+            this.BorderStyle = BorderStyle.FixedSingle;
+
+            // Restaurar tamaño si cambió
+            var animationTimer = new Timer();
+            animationTimer.Interval = 10; // Tiempo entre cada frame de la animación
+            int steps = 10;
+            int currentStep = 0;
+
+            animationTimer.Tick += (s, args) =>
+            {
+                currentStep++;
+                this.Height -= 2;
+
+                if (currentStep >= steps)
+                {
+                    animationTimer.Stop();
+                    animationTimer.Dispose();
+                }
+            };
+            animationTimer.Start();
         }
     }
 }

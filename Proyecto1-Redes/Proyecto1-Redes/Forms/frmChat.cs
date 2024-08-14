@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -28,6 +29,12 @@ using Message = XmppDotNet.Xmpp.Base.Message;
 using MaterialSkin;
 using XmppDotNet.Extensions.Client.Message;
 using System.Runtime.ConstrainedExecution;
+using XmppDotNet.Extensions.Client.Presence;
+using XmppDotNet.Extensions.Client.Disco;
+using XmppDotNet.Xmpp.Muc;
+using XmppDotNet.Extensions.Client.PubSub;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using Jid = XmppDotNet.Jid;
 
 namespace Proyecto1_Redes.Forms
 {
@@ -35,9 +42,18 @@ namespace Proyecto1_Redes.Forms
     {
         private List<string> roster = new List<string>();
         public XmppClient xmppClient;
-        public MoraChat(XmppClient xmppClient)
+        public MucManager MucManager;
+        //Create a dictionary to store conversations
+        private Dictionary<string, Dictionary<string, List<string>>> conversations_DM = new Dictionary<string, Dictionary<string, List<string>>>();
+
+
+        public MoraChat(XmppClient XmppClient)
         {
-            this.xmppClient = xmppClient;
+            this.xmppClient = XmppClient;
+            
+            MucManager = new MucManager(xmppClient);
+
+
             //xmppClient.XmppXElementReceived.Subscribe(x =>
             //{
             //    //MessageBox.Show(x.ToString());
@@ -70,21 +86,114 @@ namespace Proyecto1_Redes.Forms
             //    }
             //});
 
+            xmppClient
+                .XmppXElementReceived
+                .Where(el =>
+                    el.OfType<Message>()
+                    && el.Cast<Message>().Type == MessageType.Chat
+                    && el.Cast<Message>().Body != null)
+                .Subscribe(el =>
+                {
+                    // print in console
+                    Console.WriteLine(el.ToString());
+                    // Add or update chat cards
+                    var message = el.Cast<Message>();
+                    var from = message.From.ToString();
+                    //// Eliminate everything after the / in the jid
+                    var user = from.Split('/')[0];
+                    user = user.Split('@')[0];
+                    var body = message.Body;
+
+                    // add the conversation to the dictionary
+                    if (!conversations_DM.ContainsKey(from))
+                    {
+                        conversations_DM[from] = new Dictionary<string, List<string>>();
+                    }
+
+                    if (!conversations_DM[from].ContainsKey(from))
+                    {
+                        conversations_DM[from][from] = new List<string>();
+                    }
+
+                    conversations_DM[from][from].Add(body);
+
+                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(from, body)));
+
+
+                });
+
+            xmppClient
+                .XmppXElementReceived
+                .Where(el =>
+                    el.OfType<Message>()
+                    && el.Cast<Message>().Type == MessageType.GroupChat
+                    && el.Cast<Message>().Body != null)
+                .Subscribe(el =>
+                {
+                    // print in console
+                    Console.WriteLine(el.ToString());
+                    // Add or update chat cards
+                    var message = el.Cast<Message>();
+                    var from = message.From.ToString();
+                    //// Eliminate everything after the / in the jid
+                    var room = from.Split('/')[0];
+                    var user = from.Split('/')[1];
+
+                    var body = message.Body;
+
+                    if (!conversations_DM.ContainsKey(room))
+                    {
+                        conversations_DM[room] = new Dictionary<string, List<string>>();
+                    }
+
+                    if (!conversations_DM[room].ContainsKey(user))
+                    {
+                        conversations_DM[room][user] = new List<string>();
+                    }
+
+                    conversations_DM[room][user].Add(body);
+
+                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body)));
+
+
+                });
 
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.Purple900, Primary.Purple900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-
         }
 
-        
 
+        private void Crate_ChatCard(string UserName, String LastMessage)
+        {
+            // verify if the chat card already exists
+            var existingChatCard = flowLayoutPanel1.Controls
+                .Cast<crlChatCard>()
+                .FirstOrDefault(cc => cc.UserName == UserName);
+            if (existingChatCard != null)
+            {
+                // update the chat card
+                existingChatCard.LastMessage = LastMessage;
+            }
+            else
+            {
+                
+                var chatCard = new crlChatCard(UserName, LastMessage);
+                // add the chat card
+                flowLayoutPanel1.Controls.Add(chatCard);
+            }
+            
+        }
         private async void frmChat_Load(object sender, EventArgs e)
         {
             // request the roster from the server
             var rosterIqResult = await xmppClient.RequestRosterAsync();
+
+            var RoomId = new Jid("apolito@conference.alumchat.lol");
+
+            await MucManager.EnterRoomAsync(RoomId, "Mora");
 
             // get all rosterItems (list of contacts)
             var rosterItems
@@ -106,6 +215,7 @@ namespace Proyecto1_Redes.Forms
                 Console.WriteLine($"Jid: {ri.Jid}");
                 Console.WriteLine($"Name: {ri.Name}");
             }
+
         }
 
         private async void frmChat_FormClosing(object sender, FormClosingEventArgs e)
@@ -118,11 +228,6 @@ namespace Proyecto1_Redes.Forms
         private void tabDM_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void Label1_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private async void btSendMessage_Click(object sender, EventArgs e)
@@ -186,29 +291,18 @@ namespace Proyecto1_Redes.Forms
             }
             else if (tcChat.SelectedTab == tabProfile)
             {
-                // construct the iq query
-                var vcardRequest = new VcardIq { Type = IqType.Get, To = xmppClient.Jid };
-
-                // send the request and await the response
-                var resultIq = await xmppClient.SendIqAsync(vcardRequest);
-
                 
-                // check for success or failure
-                if (resultIq.Type == IqType.Result)
-                {
-                    // server returned a result (sucsess)
-                    // => process the vCard here
-                }
-                else if (resultIq.Type == IqType.Error)
-                {
-                    // server returned an error
-                    // => handle error
-                }
 
             }
         }
 
         private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void materialCard3_Paint(object sender, PaintEventArgs e)
         {
 
         }
