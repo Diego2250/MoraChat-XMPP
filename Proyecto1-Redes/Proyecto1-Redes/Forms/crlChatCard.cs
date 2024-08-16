@@ -49,8 +49,9 @@ namespace Proyecto1_Redes.Forms
 
         private void crlChatCard_MouseEnter(object sender, EventArgs e)
         {
-            // Cambiar el color de fondo y borde cuando el mouse entra
+            // Cambiar el color de fondo a HEX: 817f7f y borde cuando el mouse entra
             this.BorderStyle = BorderStyle.FixedSingle;
+            this.BackColor = ColorTranslator.FromHtml("#817f7f");
 
             // Opcional: puedes animar una transición
             var animationTimer = new Timer();
@@ -61,7 +62,7 @@ namespace Proyecto1_Redes.Forms
             animationTimer.Tick += (s, args) =>
             {
                 currentStep++;
-                this.Height += 2;
+                //this.Height += 2;
 
                 if (currentStep >= steps)
                 {
@@ -74,8 +75,9 @@ namespace Proyecto1_Redes.Forms
 
         private void crlChatCard_MouseLeave(object sender, EventArgs e)
         {
-            // Restaurar el color de fondo y borde cuando el mouse sale
+            // Restaurar el color de fondo a HEX #505050 y borde cuando el mouse sale
             this.BorderStyle = BorderStyle.FixedSingle;
+            this.BackColor = ColorTranslator.FromHtml("#505050");
 
             // Restaurar tamaño si cambió
             var animationTimer = new Timer();
@@ -86,7 +88,7 @@ namespace Proyecto1_Redes.Forms
             animationTimer.Tick += (s, args) =>
             {
                 currentStep++;
-                this.Height -= 2;
+                //this.Height -= 2;
 
                 if (currentStep >= steps)
                 {

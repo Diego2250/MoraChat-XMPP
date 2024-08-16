@@ -136,14 +136,19 @@ namespace Proyecto1_Redes
                 
 
                 await xmppClient.ConnectAsync();
-                MessageBox.Show("Connection Successful!");
+                //MessageBox.Show("Connection Successful!");
                 MoraChat frmChat = new MoraChat(xmppClient);
+                frmToasMessage toasMessage = new frmToasMessage("success", "Welcome to MoraChat!");
+                toasMessage.Show();
                 frmChat.Show();
                 this.Hide();
             }
             catch (XmppException ex)
             {
-                MessageBox.Show($"Error while connecting: {ex.Stanza}");
+                //MessageBox.Show($"Error while connecting: {ex.Stanza}");
+                frmToasMessage toasMessage = new frmToasMessage("error", "Error while connecting");
+                toasMessage.Show();
+                Console.WriteLine(ex.Stanza);
             }
 
             return;

@@ -188,6 +188,7 @@ namespace Proyecto1_Redes.Forms
         }
         private async void frmChat_Load(object sender, EventArgs e)
         {
+            
             // request the roster from the server
             var rosterIqResult = await xmppClient.RequestRosterAsync();
 
@@ -211,9 +212,8 @@ namespace Proyecto1_Redes.Forms
                 // or to request the vCard of the contact
                 roster.Add(ri.Jid);
 
-                // Dump some info
-                Console.WriteLine($"Jid: {ri.Jid}");
-                Console.WriteLine($"Name: {ri.Name}");
+                //Create a chatcard for each contact with the last message as "Start Chatting!"
+                flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid, "Start Chatting!"));
             }
 
         }
