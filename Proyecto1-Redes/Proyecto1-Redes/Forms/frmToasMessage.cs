@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,7 @@ namespace Proyecto1_Redes.Forms
     public partial class frmToasMessage : Form
     {
         String type, Message;
+        int x, y;
 
         public frmToasMessage(String type, String Message)
         {
@@ -47,13 +49,45 @@ namespace Proyecto1_Redes.Forms
             }
         }
 
+        private void tmrHide_Tick(object sender, EventArgs e)
+        {
+            y += 5;
+            this.Location = new Point(x, y);
+
+            if (y >= Screen.PrimaryScreen.WorkingArea.Height)
+            {
+                tmrHide.Stop();
+                this.Close();
+            }
+        }
+
+        private void tmrToast_Tick(object sender, EventArgs e)
+        {
+            // Animate the form going up
+            y -= 5;
+            this.Location = new Point(x, y);
+
+            if (y <= Screen.PrimaryScreen.WorkingArea.Height - this.Height - 10)
+            {
+                tmrToast.Stop();
+                // Wait 3 seconds before hiding the form
+                Thread.Sleep(3000);
+
+                tmrHide.Start();
+               
+                
+            }
+        }
+
         private void position()
         {
             int ScreenWidth = Screen.PrimaryScreen.WorkingArea.Width;
             int ScreenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            x = ScreenWidth - this.Width - 10;
+            y = ScreenHeight - this.Height + 70;
 
             // Set the position of the form to the top left corner of the screen
-            this.Location = new Point(ScreenWidth - this.Width - 10, ScreenHeight - this.Height - 10);  
+            this.Location = new Point(x, y);  
         }
     }
 }

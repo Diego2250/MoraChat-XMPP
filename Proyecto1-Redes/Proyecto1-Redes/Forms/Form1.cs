@@ -40,13 +40,19 @@ namespace Proyecto1_Redes
 
         private async void btLogin_Click(object sender, EventArgs e)
         {
+            btLogin.Visible = false;
+            pbLoading.Visible = true;
 
             string username = tbUser.Text + "@alumchat.lol";
             string password = tbPassword.Text;
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Enter a username and password");
+                //MessageBox.Show("Enter a username and password");
+                frmToasMessage toasMessage = new frmToasMessage("error", "Enter a username and password");
+                toasMessage.Show();
+                pbLoading.Visible = false;
+                btLogin.Visible = true;
                 return;
             }
 
@@ -140,6 +146,7 @@ namespace Proyecto1_Redes
                 MoraChat frmChat = new MoraChat(xmppClient);
                 frmToasMessage toasMessage = new frmToasMessage("success", "Welcome to MoraChat!");
                 toasMessage.Show();
+
                 frmChat.Show();
                 this.Hide();
             }
@@ -148,6 +155,8 @@ namespace Proyecto1_Redes
                 //MessageBox.Show($"Error while connecting: {ex.Stanza}");
                 frmToasMessage toasMessage = new frmToasMessage("error", "Error while connecting");
                 toasMessage.Show();
+                pbLoading.Visible = false;
+                btLogin.Visible = true;
                 Console.WriteLine(ex.Stanza);
             }
 

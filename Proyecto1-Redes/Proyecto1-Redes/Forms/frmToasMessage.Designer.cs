@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.tmrToast = new System.Windows.Forms.Timer(this.components);
+            this.tmrHide = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,6 +76,17 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Message";
             // 
+            // tmrToast
+            // 
+            this.tmrToast.Enabled = true;
+            this.tmrToast.Interval = 10;
+            this.tmrToast.Tick += new System.EventHandler(this.tmrToast_Tick);
+            // 
+            // tmrHide
+            // 
+            this.tmrHide.Interval = 10;
+            this.tmrHide.Tick += new System.EventHandler(this.tmrHide_Tick);
+            // 
             // frmToasMessage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,5 +113,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Timer tmrToast;
+        private System.Windows.Forms.Timer tmrHide;
     }
 }

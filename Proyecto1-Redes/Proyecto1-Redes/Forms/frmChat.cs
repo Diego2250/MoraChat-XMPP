@@ -29,6 +29,7 @@ using Message = XmppDotNet.Xmpp.Base.Message;
 using MaterialSkin;
 using XmppDotNet.Extensions.Client.Message;
 using System.Runtime.ConstrainedExecution;
+using System.Xml;
 using XmppDotNet.Extensions.Client.Presence;
 using XmppDotNet.Extensions.Client.Disco;
 using XmppDotNet.Xmpp.Muc;
@@ -213,7 +214,7 @@ namespace Proyecto1_Redes.Forms
                 roster.Add(ri.Jid);
 
                 //Create a chatcard for each contact with the last message as "Start Chatting!"
-                flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid, "Start Chatting!"));
+                flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid.Local, "Start Chatting!"));
             }
 
         }
@@ -305,6 +306,16 @@ namespace Proyecto1_Redes.Forms
         private void materialCard3_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btLogOut_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btDeleteAcct_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
