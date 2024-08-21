@@ -405,5 +405,35 @@ namespace Proyecto1_Redes.Forms
 
             }
         }
+
+        private async void btAddUser_Click(object sender, EventArgs e)
+        {
+            // Add user to contacts
+            try
+            {
+                string user = tbAddUser.Text;
+                if (string.IsNullOrEmpty(user))
+                {
+                    frmToasMessage toasMessage = new frmToasMessage("error", "Enter a username");
+                    toasMessage.Show();
+                    return;
+                }
+
+                await xmppClient.AddRosterItemAsync(user);
+
+                frmToasMessage toasMessage1 = new frmToasMessage("success", "User added to contacts");
+                toasMessage1.Show();
+            }
+            catch (Exception xmException)
+            {
+                frmToasMessage toasMessage = new frmToasMessage("error", xmException.Message);
+                toasMessage.Show();
+                Console.WriteLine(xmException.Message);
+                throw;
+            }
+            
+
+            
+        }
     }
 }
