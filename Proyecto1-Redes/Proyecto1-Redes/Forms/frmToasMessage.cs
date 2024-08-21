@@ -42,10 +42,17 @@ namespace Proyecto1_Redes.Forms
                 panel1.BackColor = Color.Red;
                 pictureBox1.Image = Properties.Resources.erro;
             }
-            else {
+            else if (type == "success")
+            {
                 // If the type is "success" paint the panel1 green and load success icon to pictureBox1
                 panel1.BackColor = Color.Green;
                 pictureBox1.Image = Properties.Resources.success;
+            }
+            else if(type == "info")
+            {
+                // If the type is "info" paint the panel1 blue and load info icon to pictureBox1
+                panel1.BackColor = Color.DodgerBlue;
+                pictureBox1.Image = Properties.Resources.information;
             }
         }
 

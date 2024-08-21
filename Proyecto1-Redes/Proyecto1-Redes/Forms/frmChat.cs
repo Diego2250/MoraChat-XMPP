@@ -36,6 +36,7 @@ using XmppDotNet.Xmpp.Muc;
 using XmppDotNet.Extensions.Client.PubSub;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Jid = XmppDotNet.Jid;
+using Presence = XmppDotNet.Xmpp.Base.Presence;
 
 namespace Proyecto1_Redes.Forms
 {
@@ -54,6 +55,8 @@ namespace Proyecto1_Redes.Forms
             
             MucManager = new MucManager(xmppClient);
 
+
+            getRooster();
 
             //xmppClient.XmppXElementReceived.Subscribe(x =>
             //{
@@ -106,19 +109,19 @@ namespace Proyecto1_Redes.Forms
                     var body = message.Body;
 
                     // add the conversation to the dictionary
-                    if (!conversations_DM.ContainsKey(from))
+                    if (!conversations_DM.ContainsKey(user))
                     {
-                        conversations_DM[from] = new Dictionary<string, List<string>>();
+                        conversations_DM[user] = new Dictionary<string, List<string>>();
                     }
 
-                    if (!conversations_DM[from].ContainsKey(from))
+                    if (!conversations_DM[user].ContainsKey(user))
                     {
-                        conversations_DM[from][from] = new List<string>();
+                        conversations_DM[user][user] = new List<string>();
                     }
 
-                    conversations_DM[from][from].Add(body);
+                    conversations_DM[user][user].Add(body);
 
-                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(from, body)));
+                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, body)));
 
 
                 });
@@ -159,13 +162,85 @@ namespace Proyecto1_Redes.Forms
 
                 });
 
+            // hear for status stanzas and verify if there is a chat element in the stanza
+            xmppClient.
+                XmppXElementReceived
+                .Where(el =>
+                    el.OfType<Presence>()
+                    && el.Cast<Presence>().Status != null)
+                .Subscribe(el =>
+                {
+                    var presence = el.Cast<Presence>();
+                    var from = presence.From.ToString();
+                    var user = from.Split('@')[0];
+                    var status = presence.Status;
+                    // update the status of the chat card
+                    var existingChatCard = flowLayoutPanel1.Controls
+                        .Cast<crlChatCard>()
+                        .FirstOrDefault(cc => cc.UserName == user);
+                    if (existingChatCard != null)
+                    {
+                        existingChatCard.Status = status;
+                    }
+                });
+
+
+
+
+
+            xmppClient
+                .XmppXElementReceived
+                .Subscribe(el =>
+                {
+                   Console.WriteLine(el.ToString());
+                });
+
+            
+
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.Purple900, Primary.Purple900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            
         }
 
+        private async void getRooster()
+        {
+
+            // request the roster from the server
+            var rosterIqResult = await xmppClient.RequestRosterAsync();
+
+            var RoomId = new Jid("apolito@conference.alumchat.lol");
+
+            await MucManager.EnterRoomAsync(RoomId, "Mora");
+
+            // get all rosterItems (list of contacts)
+            var rosterItems
+                = rosterIqResult
+                    .Query
+                    .Cast<Roster>()
+                    .GetRoster();
+
+
+
+            // enumerate over the items and build your contact list or GUI
+            foreach (var ri in rosterItems)
+            {
+
+                // Save the Jids
+                // You can use this to send messages to the contact
+                // or to request the vCard of the contact
+                roster.Add(ri.Jid);
+
+                //Create a chatcard for each contact with the last message as "Start Chatting!"
+                flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid.Local, "Start Chatting!"));
+            }
+
+            //add self to chat cards
+            flowLayoutPanel1.Controls.Add(new crlChatCard(xmppClient.Jid.Local, "Start Chatting!"));
+
+        }
 
         private void Crate_ChatCard(string UserName, String LastMessage)
         {
@@ -187,35 +262,9 @@ namespace Proyecto1_Redes.Forms
             }
             
         }
-        private async void frmChat_Load(object sender, EventArgs e)
+        private void frmChat_Load(object sender, EventArgs e)
         {
-            
-            // request the roster from the server
-            var rosterIqResult = await xmppClient.RequestRosterAsync();
-
-            var RoomId = new Jid("apolito@conference.alumchat.lol");
-
-            await MucManager.EnterRoomAsync(RoomId, "Mora");
-
-            // get all rosterItems (list of contacts)
-            var rosterItems
-                = rosterIqResult
-                    .Query
-                    .Cast<Roster>()
-                    .GetRoster();
-
-            // enumerate over the items and build your contact list or GUI
-            foreach (var ri in rosterItems)
-            {
-                
-                // Save the Jids
-                // You can use this to send messages to the contact
-                // or to request the vCard of the contact
-                roster.Add(ri.Jid);
-
-                //Create a chatcard for each contact with the last message as "Start Chatting!"
-                flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid.Local, "Start Chatting!"));
-            }
+            lbJid.Text = xmppClient.Jid.ToString();
 
         }
 
@@ -316,6 +365,16 @@ namespace Proyecto1_Redes.Forms
         private void btDeleteAcct_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void lbInitial_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lbJid_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

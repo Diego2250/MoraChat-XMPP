@@ -41,11 +41,11 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabProfile = new System.Windows.Forms.TabPage();
             this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            this.lbInitial = new System.Windows.Forms.Label();
-            this.btLogOut = new MaterialSkin.Controls.MaterialButton();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btDeleteAcct = new MaterialSkin.Controls.MaterialButton();
+            this.btLogOut = new MaterialSkin.Controls.MaterialButton();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbJid = new MaterialSkin.Controls.MaterialLabel();
             this.tcChat.SuspendLayout();
             this.tabDM.SuspendLayout();
             this.materialCard1.SuspendLayout();
@@ -53,6 +53,7 @@
             this.materialCard3.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.materialCard2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tcChat
@@ -250,7 +251,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(11, 12);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(265, 442);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(283, 442);
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -268,11 +269,11 @@
             // materialCard2
             // 
             this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard2.Controls.Add(this.pictureBox1);
             this.materialCard2.Controls.Add(this.btDeleteAcct);
             this.materialCard2.Controls.Add(this.btLogOut);
             this.materialCard2.Controls.Add(this.flowLayoutPanel2);
-            this.materialCard2.Controls.Add(this.materialLabel2);
-            this.materialCard2.Controls.Add(this.lbInitial);
+            this.materialCard2.Controls.Add(this.lbJid);
             this.materialCard2.Depth = 0;
             this.materialCard2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -284,42 +285,35 @@
             this.materialCard2.Size = new System.Drawing.Size(827, 466);
             this.materialCard2.TabIndex = 0;
             // 
-            // flowLayoutPanel2
+            // pictureBox1
             // 
-            this.flowLayoutPanel2.AutoScroll = true;
-            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(14, 14);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 438);
-            this.flowLayoutPanel2.TabIndex = 6;
-            this.flowLayoutPanel2.WrapContents = false;
+            this.pictureBox1.Image = global::Proyecto1_Redes.Properties.Resources.user;
+            this.pictureBox1.Location = new System.Drawing.Point(438, 37);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(123, 116);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
             // 
-            // materialLabel2
+            // btDeleteAcct
             // 
-            this.materialLabel2.AutoSize = true;
-            this.materialLabel2.Depth = 0;
-            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 34F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel2.FontType = MaterialSkin.MaterialSkinManager.fontType.H4;
-            this.materialLabel2.Location = new System.Drawing.Point(395, 152);
-            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(227, 41);
-            this.materialLabel2.TabIndex = 5;
-            this.materialLabel2.Text = "materialLabel2";
-            // 
-            // lbInitial
-            // 
-            this.lbInitial.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lbInitial.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbInitial.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lbInitial.Location = new System.Drawing.Point(441, 36);
-            this.lbInitial.Name = "lbInitial";
-            this.lbInitial.Size = new System.Drawing.Size(123, 94);
-            this.lbInitial.TabIndex = 4;
-            this.lbInitial.Text = "C";
-            this.lbInitial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btDeleteAcct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btDeleteAcct.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btDeleteAcct.Depth = 0;
+            this.btDeleteAcct.HighEmphasis = true;
+            this.btDeleteAcct.Icon = null;
+            this.btDeleteAcct.Location = new System.Drawing.Point(426, 338);
+            this.btDeleteAcct.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btDeleteAcct.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btDeleteAcct.Name = "btDeleteAcct";
+            this.btDeleteAcct.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btDeleteAcct.Size = new System.Drawing.Size(145, 36);
+            this.btDeleteAcct.TabIndex = 8;
+            this.btDeleteAcct.Text = "Delete Account";
+            this.btDeleteAcct.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btDeleteAcct.UseAccentColor = false;
+            this.btDeleteAcct.UseVisualStyleBackColor = true;
+            this.btDeleteAcct.Click += new System.EventHandler(this.btDeleteAcct_Click);
             // 
             // btLogOut
             // 
@@ -342,25 +336,32 @@
             this.btLogOut.UseVisualStyleBackColor = true;
             this.btLogOut.Click += new System.EventHandler(this.btLogOut_Click);
             // 
-            // btDeleteAcct
+            // flowLayoutPanel2
             // 
-            this.btDeleteAcct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btDeleteAcct.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btDeleteAcct.Depth = 0;
-            this.btDeleteAcct.HighEmphasis = true;
-            this.btDeleteAcct.Icon = null;
-            this.btDeleteAcct.Location = new System.Drawing.Point(426, 338);
-            this.btDeleteAcct.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btDeleteAcct.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btDeleteAcct.Name = "btDeleteAcct";
-            this.btDeleteAcct.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btDeleteAcct.Size = new System.Drawing.Size(145, 36);
-            this.btDeleteAcct.TabIndex = 8;
-            this.btDeleteAcct.Text = "Delete Account";
-            this.btDeleteAcct.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btDeleteAcct.UseAccentColor = false;
-            this.btDeleteAcct.UseVisualStyleBackColor = true;
-            this.btDeleteAcct.Click += new System.EventHandler(this.btDeleteAcct_Click);
+            this.flowLayoutPanel2.AutoScroll = true;
+            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(14, 14);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 438);
+            this.flowLayoutPanel2.TabIndex = 6;
+            this.flowLayoutPanel2.WrapContents = false;
+            // 
+            // lbJid
+            // 
+            this.lbJid.AutoSize = true;
+            this.lbJid.Depth = 0;
+            this.lbJid.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lbJid.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            this.lbJid.Location = new System.Drawing.Point(373, 168);
+            this.lbJid.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lbJid.Name = "lbJid";
+            this.lbJid.Size = new System.Drawing.Size(263, 29);
+            this.lbJid.TabIndex = 5;
+            this.lbJid.Text = "mor21146@alumchat.lol";
+            this.lbJid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbJid.Paint += new System.Windows.Forms.PaintEventHandler(this.lbJid_Paint);
             // 
             // MoraChat
             // 
@@ -383,6 +384,7 @@
             this.tabProfile.ResumeLayout(false);
             this.materialCard2.ResumeLayout(false);
             this.materialCard2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -402,10 +404,10 @@
         private MaterialSkin.Controls.MaterialSwitch swGroupChatSM;
         private MaterialSkin.Controls.MaterialCard materialCard3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label lbInitial;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialLabel lbJid;
         private MaterialSkin.Controls.MaterialButton btDeleteAcct;
         private MaterialSkin.Controls.MaterialButton btLogOut;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

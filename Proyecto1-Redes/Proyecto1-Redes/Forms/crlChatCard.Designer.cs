@@ -31,14 +31,15 @@
             this.lblLastMessage = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.lbInitial = new System.Windows.Forms.Label();
+            this.lbStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblLastMessage
             // 
             this.lblLastMessage.AutoSize = true;
-            this.lblLastMessage.Location = new System.Drawing.Point(90, 45);
+            this.lblLastMessage.Location = new System.Drawing.Point(91, 40);
             this.lblLastMessage.Name = "lblLastMessage";
-            this.lblLastMessage.Size = new System.Drawing.Size(35, 13);
+            this.lblLastMessage.Size = new System.Drawing.Size(41, 15);
             this.lblLastMessage.TabIndex = 5;
             this.lblLastMessage.Text = "label2";
             // 
@@ -46,9 +47,9 @@
             // 
             this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserName.Location = new System.Drawing.Point(89, 19);
+            this.lblUserName.Location = new System.Drawing.Point(89, 16);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(57, 20);
+            this.lblUserName.Size = new System.Drawing.Size(70, 25);
             this.lblUserName.TabIndex = 4;
             this.lblUserName.Text = "label1";
             // 
@@ -59,23 +60,36 @@
             this.lbInitial.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lbInitial.Location = new System.Drawing.Point(16, 12);
             this.lbInitial.Name = "lbInitial";
-            this.lbInitial.Size = new System.Drawing.Size(59, 53);
+            this.lbInitial.Size = new System.Drawing.Size(67, 60);
             this.lbInitial.TabIndex = 3;
             this.lbInitial.Text = "C";
             this.lbInitial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbInitial.Click += new System.EventHandler(this.lbInitial_Click);
             this.lbInitial.Paint += new System.Windows.Forms.PaintEventHandler(this.lbInitial_Paint);
+            // 
+            // lbStatus
+            // 
+            this.lbStatus.AutoSize = true;
+            this.lbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbStatus.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lbStatus.Location = new System.Drawing.Point(91, 57);
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(44, 16);
+            this.lbStatus.TabIndex = 6;
+            this.lbStatus.Text = "label3";
             // 
             // crlChatCard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.lblLastMessage);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.lbInitial);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Name = "crlChatCard";
-            this.Size = new System.Drawing.Size(190, 77);
+            this.Size = new System.Drawing.Size(190, 87);
             this.Load += new System.EventHandler(this.UserControl1_Load);
             this.MouseEnter += new System.EventHandler(this.crlChatCard_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.crlChatCard_MouseLeave);
@@ -89,5 +103,6 @@
         private System.Windows.Forms.Label lblLastMessage;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Label lbInitial;
+        private System.Windows.Forms.Label lbStatus;
     }
 }

@@ -15,6 +15,7 @@ namespace Proyecto1_Redes.Forms
         public string UserName { get; set; }
 
         private string _lastMessage;
+        private string _status;
         public string LastMessage
         {
             get => _lastMessage;
@@ -24,17 +25,37 @@ namespace Proyecto1_Redes.Forms
                 lblLastMessage.Text = value;
             }
         }
-        public crlChatCard(String UserName, string LastMessage)
+
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
+                if (lbStatus.InvokeRequired)
+                {
+                    lbStatus.Invoke(new Action(() => lbStatus.Text = value));
+                }
+                else
+                {
+                    lbStatus.Text = value;
+                }
+            }
+        }
+
+        public crlChatCard(String UserName, string LastMessage, string Status = "Unknown")
         {
             InitializeComponent();
             this.UserName = UserName;
             this.LastMessage = LastMessage;
+            this.Status = Status;
         }
 
         private void UserControl1_Load(object sender, EventArgs e)
         {
             lblLastMessage.Text = LastMessage;
             lblUserName.Text = UserName;
+            lbStatus.Text = Status;
 
         }
 
@@ -97,6 +118,11 @@ namespace Proyecto1_Redes.Forms
                 }
             };
             animationTimer.Start();
+        }
+
+        private void lbInitial_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
