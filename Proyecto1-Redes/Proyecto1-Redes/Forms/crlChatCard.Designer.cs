@@ -32,6 +32,7 @@
             this.lblUserName = new System.Windows.Forms.Label();
             this.lbInitial = new System.Windows.Forms.Label();
             this.lbStatus = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // lblLastMessage
@@ -78,11 +79,19 @@
             this.lbStatus.TabIndex = 6;
             this.lbStatus.Text = "label3";
             // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(-3, -2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(13, 90);
+            this.panel1.TabIndex = 7;
+            // 
             // crlChatCard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.lblLastMessage);
             this.Controls.Add(this.lblUserName);
@@ -104,5 +113,6 @@
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Label lbInitial;
         private System.Windows.Forms.Label lbStatus;
+        private System.Windows.Forms.Panel panel1;
     }
 }

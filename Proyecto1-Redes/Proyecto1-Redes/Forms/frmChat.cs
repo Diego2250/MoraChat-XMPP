@@ -51,45 +51,34 @@ namespace Proyecto1_Redes.Forms
 
         public MoraChat(XmppClient XmppClient)
         {
+            InitializeComponent();
+            InitializeMaterialSkin();
+
             this.xmppClient = XmppClient;
-            
             MucManager = new MucManager(xmppClient);
 
+            // Llamar a la función asíncrona en el constructor
+            LoadAsync();
+        }
 
-            getRooster();
+        private async void LoadAsync()
+        {
+            await getRooster();
 
-            //xmppClient.XmppXElementReceived.Subscribe(x =>
-            //{
-            //    //MessageBox.Show(x.ToString());
-            //    // If is a new contact, add it to the roster
-            //    if (x.Name.LocalName == "iq")
-            //    {
-            //        var iq = x.Cast<Iq>();
-            //        if (iq.Type == IqType.Set)
-            //        {
-            //            // Verify if the ask is unsubscribe or subscribe
-            //            var query = iq.Query.Cast<Roster>();
-            //            var item = query.GetRoster().First();
-            //            if (item.Ask == Ask.Unsubscribe)
-            //            {
-            //                // Remove the contact from the roster where the jid is the same
-            //                roster.RemoveAll(r => r == item.Jid);
+            // Suscribirse a los eventos después de que getRooster haya terminado
+            SubscribeToXmppEvents();
+        }
 
-            //            }
-            //            else if (item.Ask == Ask.Subscribe)
-            //            {
-            //                roster.Add(item.Jid);
-            //            }
+        private void InitializeMaterialSkin()
+        {
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.Purple900, Primary.Purple900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+        }
 
-            //            // print roster items in console
-            //            foreach (var ri in roster)
-            //            {
-            //                Console.WriteLine($"Jid: {ri}");
-            //            }
-            //        }
-            //    }
-            //});
-
+        private void SubscribeToXmppEvents()
+        {
             xmppClient
                 .XmppXElementReceived
                 .Where(el =>
@@ -98,17 +87,12 @@ namespace Proyecto1_Redes.Forms
                     && el.Cast<Message>().Body != null)
                 .Subscribe(el =>
                 {
-                    // print in console
-                    Console.WriteLine(el.ToString());
-                    // Add or update chat cards
+                    // Código para manejar mensajes de chat
                     var message = el.Cast<Message>();
                     var from = message.From.ToString();
-                    //// Eliminate everything after the / in the jid
-                    var user = from.Split('/')[0];
-                    user = user.Split('@')[0];
+                    var user = from.Split('/')[0].Split('@')[0];
                     var body = message.Body;
 
-                    // add the conversation to the dictionary
                     if (!conversations_DM.ContainsKey(user))
                     {
                         conversations_DM[user] = new Dictionary<string, List<string>>();
@@ -122,8 +106,6 @@ namespace Proyecto1_Redes.Forms
                     conversations_DM[user][user].Add(body);
 
                     flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, body)));
-
-
                 });
 
             xmppClient
@@ -134,15 +116,11 @@ namespace Proyecto1_Redes.Forms
                     && el.Cast<Message>().Body != null)
                 .Subscribe(el =>
                 {
-                    // print in console
-                    Console.WriteLine(el.ToString());
-                    // Add or update chat cards
+                    // Código para manejar mensajes de grupo
                     var message = el.Cast<Message>();
                     var from = message.From.ToString();
-                    //// Eliminate everything after the / in the jid
                     var room = from.Split('/')[0];
                     var user = from.Split('/')[1];
-
                     var body = message.Body;
 
                     if (!conversations_DM.ContainsKey(room))
@@ -158,56 +136,65 @@ namespace Proyecto1_Redes.Forms
                     conversations_DM[room][user].Add(body);
 
                     flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body)));
-
-
                 });
 
-            // hear for status stanzas and verify if there is a chat element in the stanza
-            xmppClient.
-                XmppXElementReceived
+            xmppClient
+                .XmppXElementReceived
                 .Where(el =>
                     el.OfType<Presence>()
-                    && el.Cast<Presence>().Status != null)
+                    && (el.Cast<Presence>().Status != null
+                    || el.Cast<Presence>().Type == PresenceType.Unavailable))
                 .Subscribe(el =>
                 {
-                    var presence = el.Cast<Presence>();
-                    var from = presence.From.ToString();
-                    var user = from.Split('@')[0];
-                    var status = presence.Status;
-                    // update the status of the chat card
-                    var existingChatCard = flowLayoutPanel1.Controls
-                        .Cast<crlChatCard>()
-                        .FirstOrDefault(cc => cc.UserName == user);
-                    if (existingChatCard != null)
+                    if (el.Cast<Presence>().Type == PresenceType.Unavailable)
                     {
-                        existingChatCard.Status = status;
+                        var from = el.Cast<Presence>().From.ToString();
+                        var user = from.Split('@')[0];
+
+                        var existingChatCard = flowLayoutPanel1.Controls
+                            .Cast<crlChatCard>()
+                            .FirstOrDefault(cc => cc.UserName == user);
+                        if (existingChatCard != null)
+                        {
+                            existingChatCard.Status = "Unavailable";
+                            existingChatCard.chatShow = "Unavailable";
+                        }
                     }
+                    else
+                    {
+                        var presence = el.Cast<Presence>();
+                        var from = presence.From.ToString();
+                        var user = from.Split('@')[0];
+                        var status = presence.Status;
+                        var chatShow = presence.Show.ToString();
+
+                        if (chatShow == "None")
+                        {
+                            chatShow = "Chat";
+                        }
+                        var existingChatCard = flowLayoutPanel1.Controls
+                            .Cast<crlChatCard>()
+                            .FirstOrDefault(cc => cc.UserName == user);
+                        if (existingChatCard != null)
+                        {
+                            existingChatCard.Status = status;
+                            existingChatCard.chatShow = chatShow;
+                        }
+                    }
+                   
                 });
-
-
-
-
 
             xmppClient
                 .XmppXElementReceived
                 .Subscribe(el =>
                 {
-                   Console.WriteLine(el.ToString());
+                    Console.WriteLine(el.ToString());
                 });
-
-            
-
-            InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.Purple900, Primary.Purple900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            
         }
 
-        private async void getRooster()
-        {
 
+        private async Task getRooster()
+        {
             // request the roster from the server
             var rosterIqResult = await xmppClient.RequestRosterAsync();
 
@@ -216,18 +203,11 @@ namespace Proyecto1_Redes.Forms
             await MucManager.EnterRoomAsync(RoomId, "Mora");
 
             // get all rosterItems (list of contacts)
-            var rosterItems
-                = rosterIqResult
-                    .Query
-                    .Cast<Roster>()
-                    .GetRoster();
-
-
+            var rosterItems = rosterIqResult.Query.Cast<Roster>().GetRoster();
 
             // enumerate over the items and build your contact list or GUI
             foreach (var ri in rosterItems)
             {
-
                 // Save the Jids
                 // You can use this to send messages to the contact
                 // or to request the vCard of the contact
@@ -239,7 +219,6 @@ namespace Proyecto1_Redes.Forms
 
             //add self to chat cards
             flowLayoutPanel1.Controls.Add(new crlChatCard(xmppClient.Jid.Local, "Start Chatting!"));
-
         }
 
         private void Crate_ChatCard(string UserName, String LastMessage)
@@ -265,7 +244,7 @@ namespace Proyecto1_Redes.Forms
         private void frmChat_Load(object sender, EventArgs e)
         {
             lbJid.Text = xmppClient.Jid.ToString();
-
+            
         }
 
         private async void frmChat_FormClosing(object sender, FormClosingEventArgs e)
@@ -375,6 +354,56 @@ namespace Proyecto1_Redes.Forms
         private void lbJid_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void cmbPresence_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Available
+            // Away
+            // Unavailable
+            // Do Not Disturb
+
+            if (cmbPresence.SelectedIndex == 0) {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.Chat, tbPresenceMsg.Text);
+            }
+            else if (cmbPresence.SelectedIndex == 1)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.Away, tbPresenceMsg.Text);
+            }
+            else if (cmbPresence.SelectedIndex == 2)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.ExtendedAway, tbPresenceMsg.Text);
+
+            }
+            else if (cmbPresence.SelectedIndex == 3)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.DoNotDisturb, tbPresenceMsg.Text);
+                
+            }
+        }
+
+        private void btSetPresenceMsg_Click(object sender, EventArgs e)
+        {
+            int index = cmbPresence.SelectedIndex;
+            string msg = tbPresenceMsg.Text;
+            if (index == 0)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.Chat, msg);
+            }
+            else if (index == 1)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.Away, msg);
+            }
+            else if (index == 2)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.ExtendedAway, msg);
+
+            }
+            else if (index == 3)
+            {
+                xmppClient.SendPresenceAsync(XmppDotNet.Xmpp.Show.DoNotDisturb, msg);
+
+            }
         }
     }
 }

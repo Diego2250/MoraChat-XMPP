@@ -14,8 +14,42 @@ namespace Proyecto1_Redes.Forms
     {
         public string UserName { get; set; }
 
+        private string _chatShow;
         private string _lastMessage;
         private string _status;
+
+        public string chatShow
+        {
+            get => _chatShow;
+            set
+            {
+                _chatShow = value;
+                switch (value)
+                {
+                    case "Chat":
+                        panel1.BackColor = Color.Green;
+                        break;
+                    case "DoNotDisturb":
+                        panel1.BackColor = Color.Red;
+                        break;
+                    case "ExtendedAway":
+                        panel1.BackColor = Color.Orange;
+                        break;
+                    case "Away":
+                        panel1.BackColor = Color.Yellow;
+                        break;
+                    case "Unavailable":
+                        panel1.BackColor = Color.Gray;
+                        break;
+                    case "Unknown":
+                        panel1.BackColor = Color.Gray;
+                        break;
+                    default:
+                        panel1.BackColor = Color.Gray;
+                        break;
+                }
+            }
+        }
         public string LastMessage
         {
             get => _lastMessage;
@@ -43,12 +77,14 @@ namespace Proyecto1_Redes.Forms
             }
         }
 
-        public crlChatCard(String UserName, string LastMessage, string Status = "Unknown")
+        public crlChatCard(String UserName, string LastMessage, string Status = "Unknown", string chatShow = "Unknown")
         {
             InitializeComponent();
             this.UserName = UserName;
             this.LastMessage = LastMessage;
             this.Status = Status;
+            this.chatShow = chatShow;
+            
         }
 
         private void UserControl1_Load(object sender, EventArgs e)
