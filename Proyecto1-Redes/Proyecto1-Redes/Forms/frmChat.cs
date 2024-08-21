@@ -7,12 +7,12 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Proyecto1_Redes.Classes;
 using XmppDotNet;
 using XmppDotNet.Extensions.Client.Roster;
 using XmppDotNet.Xml;
@@ -30,13 +30,21 @@ using MaterialSkin;
 using XmppDotNet.Extensions.Client.Message;
 using System.Runtime.ConstrainedExecution;
 using System.Xml;
+using Matrix.Xmpp.Client;
 using XmppDotNet.Extensions.Client.Presence;
 using XmppDotNet.Extensions.Client.Disco;
 using XmppDotNet.Xmpp.Muc;
 using XmppDotNet.Extensions.Client.PubSub;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Jid = XmppDotNet.Jid;
+using MucManager = Proyecto1_Redes.Classes.MucManager;
 using Presence = XmppDotNet.Xmpp.Base.Presence;
+using XmppClient = XmppDotNet.XmppClient;
+using Matrix.Xml;
+using Matrix.Xmpp.HttpUpload;
+using DiscoInfoIq = Matrix.Xmpp.Client.DiscoInfoIq;
+using DiscoItemsIq = XmppDotNet.Xmpp.Client.DiscoItemsIq;
+using Item = XmppDotNet.Xmpp.Muc.Item;
 
 namespace Proyecto1_Redes.Forms
 {
@@ -45,40 +53,20 @@ namespace Proyecto1_Redes.Forms
         private List<string> roster = new List<string>();
         public XmppClient xmppClient;
         public MucManager MucManager;
+
         //Create a dictionary to store conversations
         private Dictionary<string, Dictionary<string, List<string>>> conversations_DM = new Dictionary<string, Dictionary<string, List<string>>>();
 
 
         public MoraChat(XmppClient XmppClient)
         {
-            InitializeComponent();
-            InitializeMaterialSkin();
-
             this.xmppClient = XmppClient;
-            MucManager = new MucManager(xmppClient);
 
-            // Llamar a la función asíncrona en el constructor
+            // create a custom stanza to get rooms
+            // this is a custom stanza to get the rooms
+
             LoadAsync();
-        }
 
-        private async void LoadAsync()
-        {
-            await getRooster();
-
-            // Suscribirse a los eventos después de que getRooster haya terminado
-            SubscribeToXmppEvents();
-        }
-
-        private void InitializeMaterialSkin()
-        {
-            var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.Purple900, Primary.Purple900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-        }
-
-        private void SubscribeToXmppEvents()
-        {
             xmppClient
                 .XmppXElementReceived
                 .Where(el =>
@@ -141,9 +129,7 @@ namespace Proyecto1_Redes.Forms
             xmppClient
                 .XmppXElementReceived
                 .Where(el =>
-                    el.OfType<Presence>()
-                    && (el.Cast<Presence>().Status != null
-                    || el.Cast<Presence>().Type == PresenceType.Unavailable))
+                    el.OfType<Presence>())
                 .Subscribe(el =>
                 {
                     if (el.Cast<Presence>().Type == PresenceType.Unavailable)
@@ -172,6 +158,12 @@ namespace Proyecto1_Redes.Forms
                         {
                             chatShow = "Chat";
                         }
+
+                        if (status == null)
+                        {
+                            status = "Available";
+                        }
+
                         var existingChatCard = flowLayoutPanel1.Controls
                             .Cast<crlChatCard>()
                             .FirstOrDefault(cc => cc.UserName == user);
@@ -181,7 +173,7 @@ namespace Proyecto1_Redes.Forms
                             existingChatCard.chatShow = chatShow;
                         }
                     }
-                   
+
                 });
 
             xmppClient
@@ -190,6 +182,48 @@ namespace Proyecto1_Redes.Forms
                 {
                     Console.WriteLine(el.ToString());
                 });
+
+            InitializeComponent();
+            InitializeMaterialSkin();
+
+            MucManager = new MucManager(xmppClient);
+            
+        }
+
+        private async void LoadAsync()
+        {
+            var rommIq = new DiscoItemsIq{Type = IqType.Get, To = new Jid("conference.alumchat.lol"),
+                From = xmppClient.Jid, Id = "disco_1"};
+
+            var discoItems = await xmppClient.SendIqAsync(rommIq);
+
+            
+            if (discoItems.Type == IqType.Result)
+            {
+                var items = discoItems.Query.Nodes().Cast<XmppDotNet.Xmpp.Disco.Item>();
+                foreach (var item in items)
+                {
+                    // add jid to the list in combobox cmbRooms
+                    cmbRooms.Items.Add(item.Jid);
+                }
+                cmbRooms.SelectedIndex = 0;
+            }
+
+            
+
+
+            await getRooster();
+
+
+            
+        }
+
+        private void InitializeMaterialSkin()
+        {
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.Purple900, Primary.Purple900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
 
@@ -198,10 +232,7 @@ namespace Proyecto1_Redes.Forms
             // request the roster from the server
             var rosterIqResult = await xmppClient.RequestRosterAsync();
 
-            var RoomId = new Jid("apolito@conference.alumchat.lol");
-
-            await MucManager.EnterRoomAsync(RoomId, "Mora");
-
+            
             // get all rosterItems (list of contacts)
             var rosterItems = rosterIqResult.Query.Cast<Roster>().GetRoster();
 
@@ -211,14 +242,27 @@ namespace Proyecto1_Redes.Forms
                 // Save the Jids
                 // You can use this to send messages to the contact
                 // or to request the vCard of the contact
-                roster.Add(ri.Jid);
+
+                // Verify if the contact is already in the roster
+                if (roster.Contains(ri.Jid.Local))
+                {
+                    continue;
+                }
+
+                roster.Add(ri.Jid.Local);
 
                 //Create a chatcard for each contact with the last message as "Start Chatting!"
                 flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid.Local, "Start Chatting!"));
             }
 
             //add self to chat cards
-            flowLayoutPanel1.Controls.Add(new crlChatCard(xmppClient.Jid.Local, "Start Chatting!"));
+            if (!roster.Contains(xmppClient.Jid.Local))
+            {
+                roster.Add(xmppClient.Jid.Local);
+                flowLayoutPanel1.Controls.Add(new crlChatCard(xmppClient.Jid.Local, "Start Chatting!"));
+            }
+
+            
         }
 
         private void Crate_ChatCard(string UserName, String LastMessage)
@@ -241,8 +285,9 @@ namespace Proyecto1_Redes.Forms
             }
             
         }
-        private void frmChat_Load(object sender, EventArgs e)
+        private async void frmChat_Load(object sender, EventArgs e)
         {
+
             lbJid.Text = xmppClient.Jid.ToString();
             
         }
@@ -317,6 +362,7 @@ namespace Proyecto1_Redes.Forms
             }
             else if (tcChat.SelectedTab == tabChats)
             {
+                await getRooster();
             }
             else if (tcChat.SelectedTab == tabProfile)
             {
@@ -423,17 +469,40 @@ namespace Proyecto1_Redes.Forms
 
                 frmToasMessage toasMessage1 = new frmToasMessage("success", "User added to contacts");
                 toasMessage1.Show();
+                await getRooster();
             }
-            catch (Exception xmException)
+            catch (XmppException xmException)
             {
                 frmToasMessage toasMessage = new frmToasMessage("error", xmException.Message);
                 toasMessage.Show();
-                Console.WriteLine(xmException.Message);
+                Console.WriteLine(xmException.Stanza);
                 throw;
             }
             
 
             
+        }
+
+        private async void btsuscribeRoom_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var RoomId = new Jid(cmbRooms.SelectedItem.ToString());
+
+                await MucManager.EnterRoomAsync(RoomId, "Mora");
+
+                frmToasMessage toasMessage = new frmToasMessage("success", "Room joined");
+                toasMessage.Show();
+
+
+            }
+            catch (XmppException ex)
+            {
+                frmToasMessage toasMessage = new frmToasMessage("error", ex.Message);
+                toasMessage.Show();
+                Console.WriteLine(ex.Stanza);
+                throw;
+            }
         }
     }
 }

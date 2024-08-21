@@ -49,7 +49,11 @@
             this.btLogOut = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbJid = new MaterialSkin.Controls.MaterialLabel();
-            this.tabAddCnct = new System.Windows.Forms.TabPage();
+            this.tabOthers = new System.Windows.Forms.TabPage();
+            this.materialCard5 = new MaterialSkin.Controls.MaterialCard();
+            this.cmbRooms = new MaterialSkin.Controls.MaterialComboBox();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.btsuscribeRoom = new MaterialSkin.Controls.MaterialButton();
             this.materialCard4 = new MaterialSkin.Controls.MaterialCard();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.btAddUser = new MaterialSkin.Controls.MaterialButton();
@@ -62,7 +66,8 @@
             this.tabProfile.SuspendLayout();
             this.materialCard2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabAddCnct.SuspendLayout();
+            this.tabOthers.SuspendLayout();
+            this.materialCard5.SuspendLayout();
             this.materialCard4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,7 +76,7 @@
             this.tcChat.Controls.Add(this.tabDM);
             this.tcChat.Controls.Add(this.tabChats);
             this.tcChat.Controls.Add(this.tabProfile);
-            this.tcChat.Controls.Add(this.tabAddCnct);
+            this.tcChat.Controls.Add(this.tabOthers);
             this.tcChat.Depth = 0;
             this.tcChat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcChat.Location = new System.Drawing.Point(3, 64);
@@ -326,7 +331,7 @@
             this.tbPresenceMsg.AnimateReadOnly = false;
             this.tbPresenceMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbPresenceMsg.Depth = 0;
-            this.tbPresenceMsg.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbPresenceMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tbPresenceMsg.Hint = "Message";
             this.tbPresenceMsg.LeadingIcon = null;
             this.tbPresenceMsg.Location = new System.Drawing.Point(378, 274);
@@ -447,16 +452,90 @@
             this.lbJid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbJid.Paint += new System.Windows.Forms.PaintEventHandler(this.lbJid_Paint);
             // 
-            // tabAddCnct
+            // tabOthers
             // 
-            this.tabAddCnct.Controls.Add(this.materialCard4);
-            this.tabAddCnct.Location = new System.Drawing.Point(4, 22);
-            this.tabAddCnct.Name = "tabAddCnct";
-            this.tabAddCnct.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAddCnct.Size = new System.Drawing.Size(833, 472);
-            this.tabAddCnct.TabIndex = 3;
-            this.tabAddCnct.Text = "Add Contact";
-            this.tabAddCnct.UseVisualStyleBackColor = true;
+            this.tabOthers.Controls.Add(this.materialCard5);
+            this.tabOthers.Controls.Add(this.materialCard4);
+            this.tabOthers.Location = new System.Drawing.Point(4, 22);
+            this.tabOthers.Name = "tabOthers";
+            this.tabOthers.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOthers.Size = new System.Drawing.Size(833, 472);
+            this.tabOthers.TabIndex = 3;
+            this.tabOthers.Text = "Others";
+            this.tabOthers.UseVisualStyleBackColor = true;
+            // 
+            // materialCard5
+            // 
+            this.materialCard5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialCard5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard5.Controls.Add(this.cmbRooms);
+            this.materialCard5.Controls.Add(this.materialLabel3);
+            this.materialCard5.Controls.Add(this.btsuscribeRoom);
+            this.materialCard5.Depth = 0;
+            this.materialCard5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialCard5.Location = new System.Drawing.Point(423, 17);
+            this.materialCard5.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCard5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCard5.Name = "materialCard5";
+            this.materialCard5.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCard5.Size = new System.Drawing.Size(393, 430);
+            this.materialCard5.TabIndex = 8;
+            // 
+            // cmbRooms
+            // 
+            this.cmbRooms.AutoResize = false;
+            this.cmbRooms.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbRooms.Depth = 0;
+            this.cmbRooms.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbRooms.DropDownHeight = 174;
+            this.cmbRooms.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRooms.DropDownWidth = 121;
+            this.cmbRooms.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbRooms.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbRooms.FormattingEnabled = true;
+            this.cmbRooms.IntegralHeight = false;
+            this.cmbRooms.ItemHeight = 43;
+            this.cmbRooms.Location = new System.Drawing.Point(71, 191);
+            this.cmbRooms.MaxDropDownItems = 4;
+            this.cmbRooms.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbRooms.Name = "cmbRooms";
+            this.cmbRooms.Size = new System.Drawing.Size(250, 49);
+            this.cmbRooms.StartIndex = 0;
+            this.cmbRooms.TabIndex = 8;
+            // 
+            // materialLabel3
+            // 
+            this.materialLabel3.AutoSize = true;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel3.Location = new System.Drawing.Point(109, 27);
+            this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(172, 19);
+            this.materialLabel3.TabIndex = 7;
+            this.materialLabel3.Text = "Suscribe to a ChatRoom";
+            // 
+            // btsuscribeRoom
+            // 
+            this.btsuscribeRoom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btsuscribeRoom.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btsuscribeRoom.Depth = 0;
+            this.btsuscribeRoom.HighEmphasis = true;
+            this.btsuscribeRoom.Icon = null;
+            this.btsuscribeRoom.Location = new System.Drawing.Point(151, 349);
+            this.btsuscribeRoom.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btsuscribeRoom.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btsuscribeRoom.Name = "btsuscribeRoom";
+            this.btsuscribeRoom.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btsuscribeRoom.Size = new System.Drawing.Size(89, 36);
+            this.btsuscribeRoom.TabIndex = 6;
+            this.btsuscribeRoom.Text = "Suscribe";
+            this.btsuscribeRoom.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btsuscribeRoom.UseAccentColor = false;
+            this.btsuscribeRoom.UseVisualStyleBackColor = true;
+            this.btsuscribeRoom.Click += new System.EventHandler(this.btsuscribeRoom_Click);
             // 
             // materialCard4
             // 
@@ -469,7 +548,7 @@
             this.materialCard4.Controls.Add(this.tbAddUser);
             this.materialCard4.Depth = 0;
             this.materialCard4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard4.Location = new System.Drawing.Point(220, 21);
+            this.materialCard4.Location = new System.Drawing.Point(17, 17);
             this.materialCard4.Margin = new System.Windows.Forms.Padding(14);
             this.materialCard4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialCard4.Name = "materialCard4";
@@ -496,14 +575,14 @@
             this.btAddUser.Depth = 0;
             this.btAddUser.HighEmphasis = true;
             this.btAddUser.Icon = null;
-            this.btAddUser.Location = new System.Drawing.Point(131, 349);
+            this.btAddUser.Location = new System.Drawing.Point(151, 349);
             this.btAddUser.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btAddUser.MouseState = MaterialSkin.MouseState.HOVER;
             this.btAddUser.Name = "btAddUser";
             this.btAddUser.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btAddUser.Size = new System.Drawing.Size(130, 36);
+            this.btAddUser.Size = new System.Drawing.Size(90, 36);
             this.btAddUser.TabIndex = 6;
-            this.btAddUser.Text = "Send Message";
+            this.btAddUser.Text = "Add User";
             this.btAddUser.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btAddUser.UseAccentColor = false;
             this.btAddUser.UseVisualStyleBackColor = true;
@@ -560,7 +639,9 @@
             this.materialCard2.ResumeLayout(false);
             this.materialCard2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabAddCnct.ResumeLayout(false);
+            this.tabOthers.ResumeLayout(false);
+            this.materialCard5.ResumeLayout(false);
+            this.materialCard5.PerformLayout();
             this.materialCard4.ResumeLayout(false);
             this.materialCard4.PerformLayout();
             this.ResumeLayout(false);
@@ -590,10 +671,14 @@
         private MaterialSkin.Controls.MaterialComboBox cmbPresence;
         private MaterialSkin.Controls.MaterialButton btSetPresenceMsg;
         private MaterialSkin.Controls.MaterialTextBox tbPresenceMsg;
-        private System.Windows.Forms.TabPage tabAddCnct;
+        private System.Windows.Forms.TabPage tabOthers;
         private MaterialSkin.Controls.MaterialCard materialCard4;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialButton btAddUser;
         private MaterialSkin.Controls.MaterialTextBox2 tbAddUser;
+        private MaterialSkin.Controls.MaterialCard materialCard5;
+        private MaterialSkin.Controls.MaterialComboBox cmbRooms;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
+        private MaterialSkin.Controls.MaterialButton btsuscribeRoom;
     }
 }

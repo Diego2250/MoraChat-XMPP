@@ -127,7 +127,7 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\RegisterAccountHandler.cs" />
+    <Compile Include="Forms\RegisterAccountHandler.cs" />
     <Compile Include="Forms\frmChat.cs">
       <SubType>Form</SubType>
     </Compile>

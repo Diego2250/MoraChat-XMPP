@@ -64,6 +64,8 @@ namespace Proyecto1_Redes
             {
                 await Login(username, password);
             }
+            pbLoading.Visible = false;
+            btLogin.Visible = true;
         }
 
 
