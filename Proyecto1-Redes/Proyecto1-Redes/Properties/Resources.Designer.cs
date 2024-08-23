@@ -73,6 +73,16 @@ namespace Proyecto1_Redes.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap attach_file {
+            get {
+                object obj = ResourceManager.GetObject("attach-file", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cheque {
             get {
                 object obj = ResourceManager.GetObject("cheque", resourceCulture);
@@ -117,6 +127,16 @@ namespace Proyecto1_Redes.Properties {
             get {
                 object obj = ResourceManager.GetObject("message_105089", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap send {
+            get {
+                object obj = ResourceManager.GetObject("send", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

@@ -38,7 +38,20 @@
             this.tbUserSM = new MaterialSkin.Controls.MaterialTextBox2();
             this.tabChats = new System.Windows.Forms.TabPage();
             this.materialCard3 = new MaterialSkin.Controls.MaterialCard();
+            this.btSendFile = new MaterialSkin.Controls.MaterialButton();
+            this.btSendChatMsg = new MaterialSkin.Controls.MaterialButton();
+            this.tbChatMsg = new MaterialSkin.Controls.MaterialTextBox();
+            this.flpChat = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabOthers = new System.Windows.Forms.TabPage();
+            this.materialCard5 = new MaterialSkin.Controls.MaterialCard();
+            this.cmbRooms = new MaterialSkin.Controls.MaterialComboBox();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.btsuscribeRoom = new MaterialSkin.Controls.MaterialButton();
+            this.materialCard4 = new MaterialSkin.Controls.MaterialCard();
+            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            this.btAddUser = new MaterialSkin.Controls.MaterialButton();
+            this.tbAddUser = new MaterialSkin.Controls.MaterialTextBox2();
             this.tabProfile = new System.Windows.Forms.TabPage();
             this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
             this.btSetPresenceMsg = new MaterialSkin.Controls.MaterialButton();
@@ -49,34 +62,25 @@
             this.btLogOut = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbJid = new MaterialSkin.Controls.MaterialLabel();
-            this.tabOthers = new System.Windows.Forms.TabPage();
-            this.materialCard5 = new MaterialSkin.Controls.MaterialCard();
-            this.cmbRooms = new MaterialSkin.Controls.MaterialComboBox();
-            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
-            this.btsuscribeRoom = new MaterialSkin.Controls.MaterialButton();
-            this.materialCard4 = new MaterialSkin.Controls.MaterialCard();
-            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            this.btAddUser = new MaterialSkin.Controls.MaterialButton();
-            this.tbAddUser = new MaterialSkin.Controls.MaterialTextBox2();
             this.tcChat.SuspendLayout();
             this.tabDM.SuspendLayout();
             this.materialCard1.SuspendLayout();
             this.tabChats.SuspendLayout();
             this.materialCard3.SuspendLayout();
-            this.tabProfile.SuspendLayout();
-            this.materialCard2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabOthers.SuspendLayout();
             this.materialCard5.SuspendLayout();
             this.materialCard4.SuspendLayout();
+            this.tabProfile.SuspendLayout();
+            this.materialCard2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tcChat
             // 
             this.tcChat.Controls.Add(this.tabDM);
             this.tcChat.Controls.Add(this.tabChats);
-            this.tcChat.Controls.Add(this.tabProfile);
             this.tcChat.Controls.Add(this.tabOthers);
+            this.tcChat.Controls.Add(this.tabProfile);
             this.tcChat.Depth = 0;
             this.tcChat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcChat.Location = new System.Drawing.Point(3, 64);
@@ -238,12 +242,15 @@
             this.tabChats.Size = new System.Drawing.Size(833, 472);
             this.tabChats.TabIndex = 1;
             this.tabChats.Text = "Chats";
-            this.tabChats.UseVisualStyleBackColor = true;
             this.tabChats.Click += new System.EventHandler(this.tabContacts_Click);
             // 
             // materialCard3
             // 
             this.materialCard3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard3.Controls.Add(this.btSendFile);
+            this.materialCard3.Controls.Add(this.btSendChatMsg);
+            this.materialCard3.Controls.Add(this.tbChatMsg);
+            this.materialCard3.Controls.Add(this.flpChat);
             this.materialCard3.Controls.Add(this.flowLayoutPanel1);
             this.materialCard3.Depth = 0;
             this.materialCard3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -256,6 +263,84 @@
             this.materialCard3.Size = new System.Drawing.Size(827, 466);
             this.materialCard3.TabIndex = 2;
             this.materialCard3.Paint += new System.Windows.Forms.PaintEventHandler(this.materialCard3_Paint);
+            // 
+            // btSendFile
+            // 
+            this.btSendFile.AutoSize = false;
+            this.btSendFile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btSendFile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
+            this.btSendFile.Depth = 0;
+            this.btSendFile.DrawShadows = false;
+            this.btSendFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSendFile.HighEmphasis = true;
+            this.btSendFile.Icon = global::Proyecto1_Redes.Properties.Resources.attach_file;
+            this.btSendFile.Location = new System.Drawing.Point(720, 402);
+            this.btSendFile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btSendFile.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btSendFile.Name = "btSendFile";
+            this.btSendFile.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btSendFile.Size = new System.Drawing.Size(44, 50);
+            this.btSendFile.TabIndex = 14;
+            this.btSendFile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            this.btSendFile.UseAccentColor = false;
+            this.btSendFile.UseVisualStyleBackColor = true;
+            this.btSendFile.Visible = false;
+            // 
+            // btSendChatMsg
+            // 
+            this.btSendChatMsg.AutoSize = false;
+            this.btSendChatMsg.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btSendChatMsg.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
+            this.btSendChatMsg.Depth = 0;
+            this.btSendChatMsg.DrawShadows = false;
+            this.btSendChatMsg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSendChatMsg.HighEmphasis = true;
+            this.btSendChatMsg.Icon = global::Proyecto1_Redes.Properties.Resources.send;
+            this.btSendChatMsg.Location = new System.Drawing.Point(770, 402);
+            this.btSendChatMsg.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btSendChatMsg.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btSendChatMsg.Name = "btSendChatMsg";
+            this.btSendChatMsg.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btSendChatMsg.Size = new System.Drawing.Size(44, 50);
+            this.btSendChatMsg.TabIndex = 13;
+            this.btSendChatMsg.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            this.btSendChatMsg.UseAccentColor = false;
+            this.btSendChatMsg.UseVisualStyleBackColor = true;
+            this.btSendChatMsg.Visible = false;
+            this.btSendChatMsg.Click += new System.EventHandler(this.btSendChatMsg_Click);
+            // 
+            // tbChatMsg
+            // 
+            this.tbChatMsg.AnimateReadOnly = false;
+            this.tbChatMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbChatMsg.Depth = 0;
+            this.tbChatMsg.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbChatMsg.Hint = "Type message here...";
+            this.tbChatMsg.LeadingIcon = null;
+            this.tbChatMsg.Location = new System.Drawing.Point(298, 405);
+            this.tbChatMsg.MaxLength = 3000;
+            this.tbChatMsg.MouseState = MaterialSkin.MouseState.OUT;
+            this.tbChatMsg.Multiline = false;
+            this.tbChatMsg.Name = "tbChatMsg";
+            this.tbChatMsg.Size = new System.Drawing.Size(417, 50);
+            this.tbChatMsg.TabIndex = 2;
+            this.tbChatMsg.Text = "";
+            this.tbChatMsg.TrailingIcon = null;
+            this.tbChatMsg.Visible = false;
+            // 
+            // flpChat
+            // 
+            this.flpChat.AutoScroll = true;
+            this.flpChat.BackColor = System.Drawing.Color.Silver;
+            this.flpChat.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flpChat.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpChat.Location = new System.Drawing.Point(298, 12);
+            this.flpChat.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.flpChat.Name = "flpChat";
+            this.flpChat.Size = new System.Drawing.Size(516, 387);
+            this.flpChat.TabIndex = 1;
+            this.flpChat.Visible = false;
+            this.flpChat.WrapContents = false;
             // 
             // flowLayoutPanel1
             // 
@@ -270,187 +355,6 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(283, 442);
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.WrapContents = false;
-            // 
-            // tabProfile
-            // 
-            this.tabProfile.Controls.Add(this.materialCard2);
-            this.tabProfile.Location = new System.Drawing.Point(4, 22);
-            this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size = new System.Drawing.Size(833, 472);
-            this.tabProfile.TabIndex = 2;
-            this.tabProfile.Text = "Profile";
-            this.tabProfile.UseVisualStyleBackColor = true;
-            // 
-            // materialCard2
-            // 
-            this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard2.Controls.Add(this.btSetPresenceMsg);
-            this.materialCard2.Controls.Add(this.tbPresenceMsg);
-            this.materialCard2.Controls.Add(this.cmbPresence);
-            this.materialCard2.Controls.Add(this.pictureBox1);
-            this.materialCard2.Controls.Add(this.btDeleteAcct);
-            this.materialCard2.Controls.Add(this.btLogOut);
-            this.materialCard2.Controls.Add(this.flowLayoutPanel2);
-            this.materialCard2.Controls.Add(this.lbJid);
-            this.materialCard2.Depth = 0;
-            this.materialCard2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard2.Location = new System.Drawing.Point(3, 3);
-            this.materialCard2.Margin = new System.Windows.Forms.Padding(14);
-            this.materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCard2.Name = "materialCard2";
-            this.materialCard2.Padding = new System.Windows.Forms.Padding(14);
-            this.materialCard2.Size = new System.Drawing.Size(827, 466);
-            this.materialCard2.TabIndex = 0;
-            // 
-            // btSetPresenceMsg
-            // 
-            this.btSetPresenceMsg.AutoSize = false;
-            this.btSetPresenceMsg.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btSetPresenceMsg.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
-            this.btSetPresenceMsg.Depth = 0;
-            this.btSetPresenceMsg.DrawShadows = false;
-            this.btSetPresenceMsg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSetPresenceMsg.HighEmphasis = true;
-            this.btSetPresenceMsg.Icon = global::Proyecto1_Redes.Properties.Resources.cheque;
-            this.btSetPresenceMsg.Location = new System.Drawing.Point(581, 274);
-            this.btSetPresenceMsg.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btSetPresenceMsg.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btSetPresenceMsg.Name = "btSetPresenceMsg";
-            this.btSetPresenceMsg.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btSetPresenceMsg.Size = new System.Drawing.Size(39, 50);
-            this.btSetPresenceMsg.TabIndex = 12;
-            this.btSetPresenceMsg.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            this.btSetPresenceMsg.UseAccentColor = false;
-            this.btSetPresenceMsg.UseVisualStyleBackColor = true;
-            this.btSetPresenceMsg.Click += new System.EventHandler(this.btSetPresenceMsg_Click);
-            // 
-            // tbPresenceMsg
-            // 
-            this.tbPresenceMsg.AnimateReadOnly = false;
-            this.tbPresenceMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbPresenceMsg.Depth = 0;
-            this.tbPresenceMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tbPresenceMsg.Hint = "Message";
-            this.tbPresenceMsg.LeadingIcon = null;
-            this.tbPresenceMsg.Location = new System.Drawing.Point(378, 274);
-            this.tbPresenceMsg.MaxLength = 50;
-            this.tbPresenceMsg.MouseState = MaterialSkin.MouseState.OUT;
-            this.tbPresenceMsg.Multiline = false;
-            this.tbPresenceMsg.Name = "tbPresenceMsg";
-            this.tbPresenceMsg.Size = new System.Drawing.Size(196, 50);
-            this.tbPresenceMsg.TabIndex = 11;
-            this.tbPresenceMsg.Text = "Ready to Chat";
-            this.tbPresenceMsg.TrailingIcon = null;
-            // 
-            // cmbPresence
-            // 
-            this.cmbPresence.AutoResize = false;
-            this.cmbPresence.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbPresence.Depth = 0;
-            this.cmbPresence.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbPresence.DropDownHeight = 174;
-            this.cmbPresence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPresence.DropDownWidth = 121;
-            this.cmbPresence.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbPresence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbPresence.FormattingEnabled = true;
-            this.cmbPresence.Hint = "Presence";
-            this.cmbPresence.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cmbPresence.IntegralHeight = false;
-            this.cmbPresence.ItemHeight = 43;
-            this.cmbPresence.Items.AddRange(new object[] {
-            "Available",
-            "Away",
-            "Unavailable",
-            "Do Not Disturb"});
-            this.cmbPresence.Location = new System.Drawing.Point(378, 218);
-            this.cmbPresence.MaxDropDownItems = 4;
-            this.cmbPresence.MouseState = MaterialSkin.MouseState.OUT;
-            this.cmbPresence.Name = "cmbPresence";
-            this.cmbPresence.Size = new System.Drawing.Size(243, 49);
-            this.cmbPresence.StartIndex = 0;
-            this.cmbPresence.TabIndex = 10;
-            this.cmbPresence.SelectedIndexChanged += new System.EventHandler(this.cmbPresence_SelectedIndexChanged);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Proyecto1_Redes.Properties.Resources.user;
-            this.pictureBox1.Location = new System.Drawing.Point(438, 37);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(123, 116);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
-            // 
-            // btDeleteAcct
-            // 
-            this.btDeleteAcct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btDeleteAcct.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btDeleteAcct.Depth = 0;
-            this.btDeleteAcct.HighEmphasis = true;
-            this.btDeleteAcct.Icon = null;
-            this.btDeleteAcct.Location = new System.Drawing.Point(429, 395);
-            this.btDeleteAcct.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btDeleteAcct.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btDeleteAcct.Name = "btDeleteAcct";
-            this.btDeleteAcct.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btDeleteAcct.Size = new System.Drawing.Size(145, 36);
-            this.btDeleteAcct.TabIndex = 8;
-            this.btDeleteAcct.Text = "Delete Account";
-            this.btDeleteAcct.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btDeleteAcct.UseAccentColor = false;
-            this.btDeleteAcct.UseVisualStyleBackColor = true;
-            this.btDeleteAcct.Click += new System.EventHandler(this.btDeleteAcct_Click);
-            // 
-            // btLogOut
-            // 
-            this.btLogOut.AutoSize = false;
-            this.btLogOut.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btLogOut.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btLogOut.Depth = 0;
-            this.btLogOut.HighEmphasis = true;
-            this.btLogOut.Icon = null;
-            this.btLogOut.Location = new System.Drawing.Point(429, 341);
-            this.btLogOut.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btLogOut.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btLogOut.Name = "btLogOut";
-            this.btLogOut.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btLogOut.Size = new System.Drawing.Size(145, 38);
-            this.btLogOut.TabIndex = 7;
-            this.btLogOut.Text = "Log Out";
-            this.btLogOut.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btLogOut.UseAccentColor = false;
-            this.btLogOut.UseVisualStyleBackColor = true;
-            this.btLogOut.Click += new System.EventHandler(this.btLogOut_Click);
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.AutoScroll = true;
-            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(14, 14);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 438);
-            this.flowLayoutPanel2.TabIndex = 6;
-            this.flowLayoutPanel2.WrapContents = false;
-            // 
-            // lbJid
-            // 
-            this.lbJid.AutoSize = true;
-            this.lbJid.Depth = 0;
-            this.lbJid.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lbJid.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            this.lbJid.Location = new System.Drawing.Point(373, 168);
-            this.lbJid.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lbJid.Name = "lbJid";
-            this.lbJid.Size = new System.Drawing.Size(263, 29);
-            this.lbJid.TabIndex = 5;
-            this.lbJid.Text = "mor21146@alumchat.lol";
-            this.lbJid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbJid.Paint += new System.Windows.Forms.PaintEventHandler(this.lbJid_Paint);
             // 
             // tabOthers
             // 
@@ -617,6 +521,187 @@
             this.tbAddUser.TrailingIcon = null;
             this.tbAddUser.UseSystemPasswordChar = false;
             // 
+            // tabProfile
+            // 
+            this.tabProfile.Controls.Add(this.materialCard2);
+            this.tabProfile.Location = new System.Drawing.Point(4, 22);
+            this.tabProfile.Name = "tabProfile";
+            this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
+            this.tabProfile.Size = new System.Drawing.Size(833, 472);
+            this.tabProfile.TabIndex = 2;
+            this.tabProfile.Text = "Profile";
+            this.tabProfile.UseVisualStyleBackColor = true;
+            // 
+            // materialCard2
+            // 
+            this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard2.Controls.Add(this.btSetPresenceMsg);
+            this.materialCard2.Controls.Add(this.tbPresenceMsg);
+            this.materialCard2.Controls.Add(this.cmbPresence);
+            this.materialCard2.Controls.Add(this.pictureBox1);
+            this.materialCard2.Controls.Add(this.btDeleteAcct);
+            this.materialCard2.Controls.Add(this.btLogOut);
+            this.materialCard2.Controls.Add(this.flowLayoutPanel2);
+            this.materialCard2.Controls.Add(this.lbJid);
+            this.materialCard2.Depth = 0;
+            this.materialCard2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialCard2.Location = new System.Drawing.Point(3, 3);
+            this.materialCard2.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCard2.Name = "materialCard2";
+            this.materialCard2.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCard2.Size = new System.Drawing.Size(827, 466);
+            this.materialCard2.TabIndex = 0;
+            // 
+            // btSetPresenceMsg
+            // 
+            this.btSetPresenceMsg.AutoSize = false;
+            this.btSetPresenceMsg.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btSetPresenceMsg.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
+            this.btSetPresenceMsg.Depth = 0;
+            this.btSetPresenceMsg.DrawShadows = false;
+            this.btSetPresenceMsg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSetPresenceMsg.HighEmphasis = true;
+            this.btSetPresenceMsg.Icon = global::Proyecto1_Redes.Properties.Resources.cheque;
+            this.btSetPresenceMsg.Location = new System.Drawing.Point(581, 274);
+            this.btSetPresenceMsg.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btSetPresenceMsg.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btSetPresenceMsg.Name = "btSetPresenceMsg";
+            this.btSetPresenceMsg.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btSetPresenceMsg.Size = new System.Drawing.Size(39, 50);
+            this.btSetPresenceMsg.TabIndex = 12;
+            this.btSetPresenceMsg.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            this.btSetPresenceMsg.UseAccentColor = false;
+            this.btSetPresenceMsg.UseVisualStyleBackColor = true;
+            this.btSetPresenceMsg.Click += new System.EventHandler(this.btSetPresenceMsg_Click);
+            // 
+            // tbPresenceMsg
+            // 
+            this.tbPresenceMsg.AnimateReadOnly = false;
+            this.tbPresenceMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbPresenceMsg.Depth = 0;
+            this.tbPresenceMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.tbPresenceMsg.Hint = "Message";
+            this.tbPresenceMsg.LeadingIcon = null;
+            this.tbPresenceMsg.Location = new System.Drawing.Point(378, 274);
+            this.tbPresenceMsg.MaxLength = 50;
+            this.tbPresenceMsg.MouseState = MaterialSkin.MouseState.OUT;
+            this.tbPresenceMsg.Multiline = false;
+            this.tbPresenceMsg.Name = "tbPresenceMsg";
+            this.tbPresenceMsg.Size = new System.Drawing.Size(196, 50);
+            this.tbPresenceMsg.TabIndex = 11;
+            this.tbPresenceMsg.Text = "Ready to Chat";
+            this.tbPresenceMsg.TrailingIcon = null;
+            // 
+            // cmbPresence
+            // 
+            this.cmbPresence.AutoResize = false;
+            this.cmbPresence.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbPresence.Depth = 0;
+            this.cmbPresence.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbPresence.DropDownHeight = 174;
+            this.cmbPresence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPresence.DropDownWidth = 121;
+            this.cmbPresence.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbPresence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbPresence.FormattingEnabled = true;
+            this.cmbPresence.Hint = "Presence";
+            this.cmbPresence.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cmbPresence.IntegralHeight = false;
+            this.cmbPresence.ItemHeight = 43;
+            this.cmbPresence.Items.AddRange(new object[] {
+            "Available",
+            "Away",
+            "Unavailable",
+            "Do Not Disturb"});
+            this.cmbPresence.Location = new System.Drawing.Point(378, 218);
+            this.cmbPresence.MaxDropDownItems = 4;
+            this.cmbPresence.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbPresence.Name = "cmbPresence";
+            this.cmbPresence.Size = new System.Drawing.Size(243, 49);
+            this.cmbPresence.StartIndex = 0;
+            this.cmbPresence.TabIndex = 10;
+            this.cmbPresence.SelectedIndexChanged += new System.EventHandler(this.cmbPresence_SelectedIndexChanged);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Proyecto1_Redes.Properties.Resources.user;
+            this.pictureBox1.Location = new System.Drawing.Point(438, 37);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(123, 116);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
+            // 
+            // btDeleteAcct
+            // 
+            this.btDeleteAcct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btDeleteAcct.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btDeleteAcct.Depth = 0;
+            this.btDeleteAcct.HighEmphasis = true;
+            this.btDeleteAcct.Icon = null;
+            this.btDeleteAcct.Location = new System.Drawing.Point(429, 395);
+            this.btDeleteAcct.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btDeleteAcct.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btDeleteAcct.Name = "btDeleteAcct";
+            this.btDeleteAcct.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btDeleteAcct.Size = new System.Drawing.Size(145, 36);
+            this.btDeleteAcct.TabIndex = 8;
+            this.btDeleteAcct.Text = "Delete Account";
+            this.btDeleteAcct.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btDeleteAcct.UseAccentColor = false;
+            this.btDeleteAcct.UseVisualStyleBackColor = true;
+            this.btDeleteAcct.Click += new System.EventHandler(this.btDeleteAcct_Click);
+            // 
+            // btLogOut
+            // 
+            this.btLogOut.AutoSize = false;
+            this.btLogOut.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btLogOut.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btLogOut.Depth = 0;
+            this.btLogOut.HighEmphasis = true;
+            this.btLogOut.Icon = null;
+            this.btLogOut.Location = new System.Drawing.Point(429, 341);
+            this.btLogOut.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btLogOut.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btLogOut.Name = "btLogOut";
+            this.btLogOut.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btLogOut.Size = new System.Drawing.Size(145, 36);
+            this.btLogOut.TabIndex = 7;
+            this.btLogOut.Text = "Log Out";
+            this.btLogOut.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btLogOut.UseAccentColor = false;
+            this.btLogOut.UseVisualStyleBackColor = true;
+            this.btLogOut.Click += new System.EventHandler(this.btLogOut_Click);
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoScroll = true;
+            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(14, 14);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(221, 438);
+            this.flowLayoutPanel2.TabIndex = 6;
+            this.flowLayoutPanel2.WrapContents = false;
+            // 
+            // lbJid
+            // 
+            this.lbJid.AutoSize = true;
+            this.lbJid.Depth = 0;
+            this.lbJid.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lbJid.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            this.lbJid.Location = new System.Drawing.Point(373, 168);
+            this.lbJid.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lbJid.Name = "lbJid";
+            this.lbJid.Size = new System.Drawing.Size(263, 29);
+            this.lbJid.TabIndex = 5;
+            this.lbJid.Text = "mor21146@alumchat.lol";
+            this.lbJid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbJid.Paint += new System.Windows.Forms.PaintEventHandler(this.lbJid_Paint);
+            // 
             // MoraChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -635,15 +720,15 @@
             this.materialCard1.PerformLayout();
             this.tabChats.ResumeLayout(false);
             this.materialCard3.ResumeLayout(false);
-            this.tabProfile.ResumeLayout(false);
-            this.materialCard2.ResumeLayout(false);
-            this.materialCard2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabOthers.ResumeLayout(false);
             this.materialCard5.ResumeLayout(false);
             this.materialCard5.PerformLayout();
             this.materialCard4.ResumeLayout(false);
             this.materialCard4.PerformLayout();
+            this.tabProfile.ResumeLayout(false);
+            this.materialCard2.ResumeLayout(false);
+            this.materialCard2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -680,5 +765,9 @@
         private MaterialSkin.Controls.MaterialComboBox cmbRooms;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
         private MaterialSkin.Controls.MaterialButton btsuscribeRoom;
+        private System.Windows.Forms.FlowLayoutPanel flpChat;
+        private MaterialSkin.Controls.MaterialButton btSendChatMsg;
+        private MaterialSkin.Controls.MaterialTextBox tbChatMsg;
+        private MaterialSkin.Controls.MaterialButton btSendFile;
     }
 }

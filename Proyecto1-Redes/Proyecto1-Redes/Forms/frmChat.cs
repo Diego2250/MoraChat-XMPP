@@ -30,6 +30,7 @@ using MaterialSkin;
 using XmppDotNet.Extensions.Client.Message;
 using System.Runtime.ConstrainedExecution;
 using System.Xml;
+using MaterialSkin.Controls;
 using Matrix.Xmpp.Client;
 using XmppDotNet.Extensions.Client.Presence;
 using XmppDotNet.Extensions.Client.Disco;
@@ -53,9 +54,10 @@ namespace Proyecto1_Redes.Forms
         private List<string> roster = new List<string>();
         public XmppClient xmppClient;
         public MucManager MucManager;
+        private string currectChat;
 
         //Create a dictionary to store conversations
-        private Dictionary<string, Dictionary<string, List<string>>> conversations_DM = new Dictionary<string, Dictionary<string, List<string>>>();
+        private Dictionary<string, List<List<string>>> conversations_DM = new Dictionary<string, List<List<string>>>();
 
 
         public MoraChat(XmppClient XmppClient)
@@ -71,65 +73,62 @@ namespace Proyecto1_Redes.Forms
                 .XmppXElementReceived
                 .Where(el =>
                     el.OfType<Message>()
-                    && el.Cast<Message>().Type == MessageType.Chat
                     && el.Cast<Message>().Body != null)
                 .Subscribe(el =>
                 {
                     // Código para manejar mensajes de chat
-                    var message = el.Cast<Message>();
-                    var from = message.From.ToString();
-                    var user = from.Split('/')[0].Split('@')[0];
-                    var body = message.Body;
-
-                    if (!conversations_DM.ContainsKey(user))
+                    if (el.Cast<Message>().Type == MessageType.Chat)
                     {
-                        conversations_DM[user] = new Dictionary<string, List<string>>();
+                        var message = el.Cast<Message>();
+                        var from = message.From.ToString();
+                        var user = from.Split('/')[0].Split('@')[0];
+                        var body = message.Body;
+
+                        if (!conversations_DM.ContainsKey(user))
+                        {
+                            conversations_DM[user] = new List<List<string>>();
+                        }
+
+
+                        conversations_DM[user].Add(new List<string> { user, body });
+
+                        flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, body)));
+                        if (currectChat == user)
+                        {
+                            AddMessageToChat(body, false, user);
+                        }
                     }
 
-                    if (!conversations_DM[user].ContainsKey(user))
+                    if (el.Cast<Message>().Type == MessageType.GroupChat)
                     {
-                        conversations_DM[user][user] = new List<string>();
+                        var message = el.Cast<Message>();
+                        var from = message.From.ToString();
+                        var room = from.Split('/')[0];
+                        var user = from.Split('/')[1];
+                        var body = message.Body;
+
+                        if (!conversations_DM.ContainsKey(room))
+                        {
+                            conversations_DM[room] = new List<List<string>>();
+                        }
+
+                        conversations_DM[room].Add(new List<string> { user, body });
+
+                        flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body)));
+                        if (currectChat == room)
+                        {
+                            AddMessageToChat(body, false, user);
+                        }
                     }
-
-                    conversations_DM[user][user].Add(body);
-
-                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, body)));
+                   
                 });
+
 
             xmppClient
                 .XmppXElementReceived
                 .Where(el =>
-                    el.OfType<Message>()
-                    && el.Cast<Message>().Type == MessageType.GroupChat
-                    && el.Cast<Message>().Body != null)
-                .Subscribe(el =>
-                {
-                    // Código para manejar mensajes de grupo
-                    var message = el.Cast<Message>();
-                    var from = message.From.ToString();
-                    var room = from.Split('/')[0];
-                    var user = from.Split('/')[1];
-                    var body = message.Body;
-
-                    if (!conversations_DM.ContainsKey(room))
-                    {
-                        conversations_DM[room] = new Dictionary<string, List<string>>();
-                    }
-
-                    if (!conversations_DM[room].ContainsKey(user))
-                    {
-                        conversations_DM[room][user] = new List<string>();
-                    }
-
-                    conversations_DM[room][user].Add(body);
-
-                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body)));
-                });
-
-            xmppClient
-                .XmppXElementReceived
-                .Where(el =>
-                    el.OfType<Presence>())
+                    el.OfType<Presence>()
+                    && el.Cast<Presence>().Type != PresenceType.Error)
                 .Subscribe(el =>
                 {
                     if (el.Cast<Presence>().Type == PresenceType.Unavailable)
@@ -195,6 +194,7 @@ namespace Proyecto1_Redes.Forms
             var rommIq = new DiscoItemsIq{Type = IqType.Get, To = new Jid("conference.alumchat.lol"),
                 From = xmppClient.Jid, Id = "disco_1"};
 
+
             var discoItems = await xmppClient.SendIqAsync(rommIq);
 
             
@@ -231,6 +231,7 @@ namespace Proyecto1_Redes.Forms
         {
             // request the roster from the server
             var rosterIqResult = await xmppClient.RequestRosterAsync();
+            
 
             
             // get all rosterItems (list of contacts)
@@ -250,16 +251,22 @@ namespace Proyecto1_Redes.Forms
                 }
 
                 roster.Add(ri.Jid.Local);
-
-                //Create a chatcard for each contact with the last message as "Start Chatting!"
-                flowLayoutPanel1.Controls.Add(new crlChatCard(ri.Jid.Local, "Start Chatting!"));
+                flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(ri.Jid.Local, "Start Chatting!")));
             }
 
             //add self to chat cards
             if (!roster.Contains(xmppClient.Jid.Local))
             {
                 roster.Add(xmppClient.Jid.Local);
-                flowLayoutPanel1.Controls.Add(new crlChatCard(xmppClient.Jid.Local, "Start Chatting!"));
+                flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(xmppClient.Jid.Local, "Start Chatting!")));
+            }
+
+            //send probe to all contacts
+            foreach (var contact in roster)
+            {
+                var probeiq = new XmppDotNet.Xmpp.Client.Presence
+                    { Type = PresenceType.Probe, To = contact + "@alumchat.lol" };
+                await xmppClient.SendPresenceAsync(probeiq);
             }
 
             
@@ -282,8 +289,121 @@ namespace Proyecto1_Redes.Forms
                 var chatCard = new crlChatCard(UserName, LastMessage);
                 // add the chat card
                 flowLayoutPanel1.Controls.Add(chatCard);
+                chatCard.Click += NewCard_ChatCardClicked;
             }
             
+        }
+
+        // Manejar el evento de clic en una tarjeta de chat
+        private void NewCard_ChatCardClicked(object sender, EventArgs e)
+        {
+            crlChatCard clickedCard = sender as crlChatCard;
+            if (clickedCard != null)
+            {
+                //MessageBox.Show("Tarjeta de: " + clickedCard.UserName);
+                //Search for the conversation
+                string user = clickedCard.UserName;
+                currectChat = user;
+                List<List<string>> conversation;
+                //Clear the chat
+                flpChat.Controls.Clear();
+                try
+                {
+                    //if no conversation is found, show toast and return
+                     conversation = conversations_DM[user];
+                }
+                catch (Exception exception)
+                {
+                    //frmToasMessage toasMessage = new frmToasMessage("info", "No messages!");
+                    //toasMessage.Show();
+                    flpChat.Visible = true;
+                    tbChatMsg.Visible = true;
+                    btSendChatMsg.Visible = true;
+                    btSendFile.Visible = true;
+                    return;
+                }
+                
+
+                //Add the messages to the chat
+                foreach (var message in conversation)
+                {
+                    string userMessage = message[0];
+                    string messageText = message[1];
+                    if (userMessage == xmppClient.Jid.Local)
+                    {
+                        AddMessageToChat(messageText, true);
+                    }
+                    else
+                    {
+                        AddMessageToChat(messageText, false, userMessage);
+                    }
+                }
+                tbChatMsg.Visible = true;
+                btSendChatMsg.Visible = true;
+                btSendFile.Visible = true;
+                flpChat.Visible = true;
+            }
+        }
+
+        private void AddMessageToChat(string message, bool isUser, string userName = null)
+        {
+            // add label to the flow layout panel
+            MaterialMultiLineTextBox2 tbMessBox = new MaterialMultiLineTextBox2();
+            //verify if the messages is an url
+            Uri uriResult;
+            bool result = Uri.TryCreate(message, UriKind.Absolute, out uriResult)
+                          && uriResult.Scheme == Uri.UriSchemeHttps;
+           
+            if (isUser)
+            {
+                tbMessBox.Text = "You" + Environment.NewLine + message;
+                // split the text every 50 characters and count the elements
+                int lines = tbMessBox.Text.Length / 50;
+                tbMessBox.ReadOnly = true;
+                tbMessBox.BackColor = Color.MediumPurple;
+                tbMessBox.ForeColor = Color.White;
+                tbMessBox.Width = 486;
+                // for each line add 20 to the height
+                tbMessBox.Height = 60 + (lines * 20);
+                tbMessBox.Margin = new Padding(0, 0, 0, 10);
+                tbMessBox.TextAlign = HorizontalAlignment.Right;
+                //flpChat.Controls.Add(tbMessBox);
+                flpChat.Invoke(new Action(() => flpChat.Controls.Add(tbMessBox)));
+                //scroll to the bottom
+                flpChat.Invoke(new Action(() => flpChat.ScrollControlIntoView(tbMessBox)));
+            }
+            else
+            {
+
+                tbMessBox.Text = userName + Environment.NewLine + message;
+                // split the text every 50 characters and count the elements
+                int lines = tbMessBox.Text.Length / 50;
+                tbMessBox.ReadOnly = true;
+                tbMessBox.BackColor = Color.FromArgb(0, 0, 0);
+                tbMessBox.ForeColor = Color.FromArgb(255, 255, 255);
+                tbMessBox.Width = 486;
+                // for each line add 20 to the height
+                tbMessBox.Height = 60 + (lines * 20);
+                tbMessBox.Margin = new Padding(0, 0, 0, 10);
+                tbMessBox.TextAlign = HorizontalAlignment.Left;
+                //flpChat.Controls.Add(tbMessBox);
+                flpChat.Invoke(new Action(() => flpChat.Controls.Add(tbMessBox)));
+                flpChat.Invoke(new Action(() => flpChat.ScrollControlIntoView(tbMessBox)));
+            }
+            
+            if (result)
+            {
+                //add a web browser to the flow layout panel
+                WebBrowser webBrowser = new WebBrowser();
+                webBrowser.Navigate(message);
+                webBrowser.Width = 486;
+                webBrowser.Margin = new Padding(0, 0, 0, 10);
+
+                //flpChat.Controls.Add(webBrowser);
+                flpChat.Invoke(new Action(() => flpChat.Controls.Add(webBrowser)));
+                flpChat.Invoke(new Action(() => flpChat.ScrollControlIntoView(webBrowser)));
+                return;
+            }
         }
         private async void frmChat_Load(object sender, EventArgs e)
         {
@@ -330,7 +450,17 @@ namespace Proyecto1_Redes.Forms
                 MessageBox.Show("Message sent");
                 tbUserSM.Text = "";
                 tbMessageSM.Text = "";
+                user = user.Split('@')[0];
 
+                // Add the message to the conversation
+                if (!conversations_DM.ContainsKey(user))
+                {
+                    conversations_DM[user] = new List<List<string>>();
+                }
+
+                conversations_DM[user].Add(new List<string> { xmppClient.Jid.Local, message });
+
+                flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, message)));
             }
             catch (XmppException ex)
             {
@@ -357,6 +487,7 @@ namespace Proyecto1_Redes.Forms
 
         private async void tcChat_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currectChat = "";
             if (tcChat.SelectedTab == tabDM)
             {
             }
@@ -392,10 +523,6 @@ namespace Proyecto1_Redes.Forms
             
         }
 
-        private void lbInitial_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void lbJid_Paint(object sender, PaintEventArgs e)
         {
@@ -504,5 +631,54 @@ namespace Proyecto1_Redes.Forms
                 throw;
             }
         }
+
+
+        private void btSendChatMsg_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(currectChat))
+            {
+                frmToasMessage toasMessage = new frmToasMessage("info", "Select a chat!");
+                toasMessage.Show();
+                return;
+            }
+            string message = tbChatMsg.Text;
+            if (string.IsNullOrEmpty(message))
+            {
+                frmToasMessage toasMessage = new frmToasMessage("info", "Enter a message!");
+                toasMessage.Show();
+                return;
+            }
+            var user = currectChat;
+            //verify if is a group chat
+            if (!currectChat.Contains("@conference.alumchat.lol"))
+            {
+                user = currectChat + "@alumchat.lol";
+                // send a chat message
+                xmppClient.SendChatMessageAsync(user, message);
+                AddMessageToChat(message, true);
+            }
+            else
+            {
+                xmppClient.SendGroupChatMessageAsync(user, message);
+                AddMessageToChat(message, true);
+            }
+           
+            tbChatMsg.Text = "";
+
+            // Add the message to the conversation
+            if (!conversations_DM.ContainsKey(currectChat))
+            {
+                conversations_DM[currectChat] = new List<List<string>>();
+            }
+
+            conversations_DM[currectChat].Add(new List<string> { xmppClient.Jid.Local, message });
+
+            //update chatcard with createChatCard method
+            flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(currectChat, message)));
+            
+
+
+        }
+
     }
 }
