@@ -327,6 +327,8 @@
             this.tbChatMsg.Text = "";
             this.tbChatMsg.TrailingIcon = null;
             this.tbChatMsg.Visible = false;
+            this.tbChatMsg.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbChatMsg_KeyDown);
+            this.tbChatMsg.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbChatMsg_KeyPress);
             // 
             // flpChat
             // 

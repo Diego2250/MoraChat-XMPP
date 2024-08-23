@@ -95,8 +95,18 @@ namespace Proyecto1_Redes.Forms
                         flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, body)));
                         if (currectChat == user)
                         {
-                            AddMessageToChat(body, false, user);
+                            if (user == xmppClient.Jid.Local)
+                            {
+                                AddMessageToChat(body, true);
+                            }
+                            else
+                            {
+                                AddMessageToChat(body, false, user);
+                            }
                         }
+
+                        frmToasMessage toasMessage = new frmToasMessage("error", "Enter a username");
+                        toasMessage.Show();
                     }
 
                     if (el.Cast<Message>().Type == MessageType.GroupChat)
@@ -117,7 +127,14 @@ namespace Proyecto1_Redes.Forms
                         flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body)));
                         if (currectChat == room)
                         {
-                            AddMessageToChat(body, false, user);
+                            if (user == xmppClient.Jid.Local)
+                            {
+                                AddMessageToChat(body, true);
+                            }
+                            else
+                            {
+                                AddMessageToChat(body, false, user);
+                            }
                         }
                     }
                    
@@ -616,7 +633,7 @@ namespace Proyecto1_Redes.Forms
             {
                 var RoomId = new Jid(cmbRooms.SelectedItem.ToString());
 
-                await MucManager.EnterRoomAsync(RoomId, "Mora");
+                await MucManager.EnterRoomAsync(RoomId, xmppClient.Jid.Local);
 
                 frmToasMessage toasMessage = new frmToasMessage("success", "Room joined");
                 toasMessage.Show();
@@ -656,22 +673,26 @@ namespace Proyecto1_Redes.Forms
                 // send a chat message
                 xmppClient.SendChatMessageAsync(user, message);
                 AddMessageToChat(message, true);
+
+                // Add the message to the conversation
+                if (!conversations_DM.ContainsKey(currectChat))
+                {
+                    conversations_DM[currectChat] = new List<List<string>>();
+                }
+
+                conversations_DM[currectChat].Add(new List<string> { xmppClient.Jid.Local, message });
             }
             else
             {
                 xmppClient.SendGroupChatMessageAsync(user, message);
-                AddMessageToChat(message, true);
+                //AddMessageToChat(message, true);
+                //No need to add the message to the chat
+                //The message will be added when the message is received
             }
            
             tbChatMsg.Text = "";
 
-            // Add the message to the conversation
-            if (!conversations_DM.ContainsKey(currectChat))
-            {
-                conversations_DM[currectChat] = new List<List<string>>();
-            }
-
-            conversations_DM[currectChat].Add(new List<string> { xmppClient.Jid.Local, message });
+           
 
             //update chatcard with createChatCard method
             flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(currectChat, message)));
@@ -680,5 +701,20 @@ namespace Proyecto1_Redes.Forms
 
         }
 
+        private void tbChatMsg_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void tbChatMsg_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if the user press enter send the message
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+
+                btSendChatMsg_Click(sender, e);
+            }
+        }
     }
 }
