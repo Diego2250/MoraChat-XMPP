@@ -105,8 +105,12 @@ namespace Proyecto1_Redes.Forms
                             }
                         }
 
-                        frmToasMessage toasMessage = new frmToasMessage("error", "Enter a username");
-                        toasMessage.Show();
+                        // Mostrar frmToasMessage en el hilo de la interfaz de usuario
+                        this.Invoke(new Action(() =>
+                        {
+                            frmToasMessage toasMessage = new frmToasMessage("info", "New Message from " + user + "!");
+                            toasMessage.Show();
+                        }));
                     }
 
                     if (el.Cast<Message>().Type == MessageType.GroupChat)

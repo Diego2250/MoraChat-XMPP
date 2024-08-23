@@ -21,12 +21,16 @@ namespace Proyecto1_Redes.Forms
             InitializeComponent();
             this.type = type;
             this.Message = Message;
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.ShowInTaskbar = false;
+            this.SendToBack();
         }
 
         private void frmToasMessage_Load(object sender, EventArgs e)
         {
             position();
-            this.SendToBack();
+            
         }
 
         private void frmToasMessage_Paint(object sender, PaintEventArgs e)
