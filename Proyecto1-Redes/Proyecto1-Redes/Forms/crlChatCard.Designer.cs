@@ -65,7 +65,6 @@
             this.lbInitial.TabIndex = 3;
             this.lbInitial.Text = "C";
             this.lbInitial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbInitial.Click += new System.EventHandler(this.lbInitial_Click);
             this.lbInitial.Paint += new System.Windows.Forms.PaintEventHandler(this.lbInitial_Paint);
             // 
             // lbStatus

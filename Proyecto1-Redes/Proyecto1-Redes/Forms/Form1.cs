@@ -35,7 +35,7 @@ namespace Proyecto1_Redes
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private async void btLogin_Click(object sender, EventArgs e)
@@ -84,7 +84,7 @@ namespace Proyecto1_Redes
                 conf =>
                 {
                     conf.UseSocketTransport();
-                    conf.AutoReconnect = true;
+                    //conf.AutoReconnect = true;
                     conf.WithCertificateValidator(new AlwaysAcceptCertificateValidator());
                 }
             )

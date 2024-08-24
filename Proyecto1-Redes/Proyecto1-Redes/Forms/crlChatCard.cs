@@ -156,9 +156,5 @@ namespace Proyecto1_Redes.Forms
             animationTimer.Start();
         }
 
-        private void lbInitial_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

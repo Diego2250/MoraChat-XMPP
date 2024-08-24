@@ -712,6 +712,8 @@
             this.ClientSize = new System.Drawing.Size(847, 565);
             this.Controls.Add(this.tcChat);
             this.DrawerTabControl = this.tcChat;
+            this.MaximumSize = new System.Drawing.Size(847, 565);
+            this.MinimumSize = new System.Drawing.Size(847, 565);
             this.Name = "MoraChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MoraChat";

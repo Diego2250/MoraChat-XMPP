@@ -13,6 +13,7 @@ namespace Proyecto1_Redes.Forms
 {
     public partial class frmToasMessage : Form
     {
+        private static List<frmToasMessage> activeToasts = new List<frmToasMessage>();
         String type, Message;
         int x, y;
 
@@ -25,6 +26,7 @@ namespace Proyecto1_Redes.Forms
             this.FormBorderStyle = FormBorderStyle.None;
             this.ShowInTaskbar = false;
             this.SendToBack();
+
         }
 
         private void frmToasMessage_Load(object sender, EventArgs e)
@@ -73,6 +75,17 @@ namespace Proyecto1_Redes.Forms
             }
         }
 
+        private void tmrWait_Tick(object sender, EventArgs e)
+        {
+            tmrWait.Stop();  // Detenemos el temporizador de espera
+            tmrHide.Start(); // Inicia el ocultamiento
+        }
+
+        private void frmToasMessage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
         private void tmrToast_Tick(object sender, EventArgs e)
         {
             // Animate the form going up
@@ -83,9 +96,7 @@ namespace Proyecto1_Redes.Forms
             {
                 tmrToast.Stop();
                 // Wait 3 seconds before hiding the form
-                Thread.Sleep(3000);
-
-                tmrHide.Start();
+                tmrWait.Start(); 
                
                 
             }

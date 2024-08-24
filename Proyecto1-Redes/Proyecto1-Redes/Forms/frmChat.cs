@@ -45,6 +45,8 @@ using Item = XmppDotNet.Xmpp.Muc.Item;
 using System.Net.Http;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
+using XmppDotNet.Xmpp.MessageArchiving;
+using XmppDotNet.Xmpp.Register;
 
 namespace Proyecto1_Redes.Forms
 {
@@ -320,6 +322,11 @@ namespace Proyecto1_Redes.Forms
             crlChatCard clickedCard = sender as crlChatCard;
             if (clickedCard != null)
             {
+                // Change the color of the background to HEX: 817f7f and border when click of the clicked card
+                clickedCard.BorderStyle = BorderStyle.FixedSingle;
+                clickedCard.BackColor = ColorTranslator.FromHtml("#817f7f");
+                
+
                 //MessageBox.Show("Tarjeta de: " + clickedCard.UserName);
                 //Search for the conversation
                 string user = clickedCard.UserName;
@@ -427,18 +434,20 @@ namespace Proyecto1_Redes.Forms
                 return;
             }
         }
-        private async void frmChat_Load(object sender, EventArgs e)
+        private void frmChat_Load(object sender, EventArgs e)
         {
 
             lbJid.Text = xmppClient.Jid.ToString();
             
         }
 
-        private async void frmChat_FormClosing(object sender, FormClosingEventArgs e)
+        private void frmChat_FormClosing(object sender, FormClosingEventArgs e)
         {
-            await xmppClient.DisconnectAsync();
-            Form1 frmLogin = new Form1();
-            frmLogin.Show();
+            if (xmppClient != null)
+            {
+                xmppClient.DisconnectAsync();
+            }
+
         }
 
         private void tabDM_Click(object sender, EventArgs e)
@@ -537,14 +546,42 @@ namespace Proyecto1_Redes.Forms
 
         private void btLogOut_Click(object sender, EventArgs e)
         {
-            this.Close();
+            xmppClient.DisconnectAsync();
+            Form1 frmLogin = new Form1();
+            frmLogin.Show();
+
+            this.Hide();
         }
 
-        private void btDeleteAcct_Click(object sender, EventArgs e)
+        private async void btDeleteAcct_Click(object sender, EventArgs e)
         {
-            
-        }
+            // build this xml 
+            //<iq xmlns="jabber:client" id="agsXMPP_1" to="kevin-laptop"><query xmlns="jabber:iq:register"><remove /></query></iq>
 
+            string serverAddress = "alumchat.lol";
+
+            // Construir la stanza XML con la dirección del servidor
+            string deleteAccountXml = $@"
+                                    <iq xmlns='jabber:client' type='set' id='agsXMPP_1' to='{serverAddress}'>
+                                        <query xmlns='jabber:iq:register'>
+                                            <remove />
+                                        </query>
+                                    </iq>";
+
+            XmppXElement deleteAccountStanza = XmppXElement.LoadXml(deleteAccountXml);
+
+            await xmppClient.SendAsync(deleteAccountStanza);
+
+            frmToasMessage toasMessage = new frmToasMessage("success", "Account deleted. Redirecting to login...");
+            toasMessage.Show();
+
+            xmppClient = null;
+
+            Form1 frmLogin = new Form1();
+            frmLogin.Show();
+            this.Hide();
+
+        }
 
         private void lbJid_Paint(object sender, PaintEventArgs e)
         {

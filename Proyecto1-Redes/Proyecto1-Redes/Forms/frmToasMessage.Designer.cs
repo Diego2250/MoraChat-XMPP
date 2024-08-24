@@ -35,6 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tmrToast = new System.Windows.Forms.Timer(this.components);
             this.tmrHide = new System.Windows.Forms.Timer(this.components);
+            this.tmrWait = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,6 +88,11 @@
             this.tmrHide.Interval = 10;
             this.tmrHide.Tick += new System.EventHandler(this.tmrHide_Tick);
             // 
+            // tmrWait
+            // 
+            this.tmrWait.Interval = 3000;
+            this.tmrWait.Tick += new System.EventHandler(this.tmrWait_Tick);
+            // 
             // frmToasMessage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -102,6 +108,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "frmToasMessage";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmToasMessage_FormClosed);
             this.Load += new System.EventHandler(this.frmToasMessage_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.frmToasMessage_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -118,5 +125,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer tmrToast;
         private System.Windows.Forms.Timer tmrHide;
+        private System.Windows.Forms.Timer tmrWait;
     }
 }
