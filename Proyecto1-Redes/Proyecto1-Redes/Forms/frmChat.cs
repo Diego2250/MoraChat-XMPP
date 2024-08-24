@@ -273,7 +273,7 @@ namespace Proyecto1_Redes.Forms
                 }
 
                 roster.Add(ri.Jid.Local);
-                flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(ri.Jid.Local, "Start Chatting!")));
+                flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(ri.Jid.Local, "Start Chatting!", true)));
             }
 
             //add self to chat cards
@@ -294,7 +294,7 @@ namespace Proyecto1_Redes.Forms
             
         }
 
-        private void Crate_ChatCard(string UserName, String LastMessage)
+        private void Crate_ChatCard(string UserName, String LastMessage, bool isContact = false)
         {
             // verify if the chat card already exists
             var existingChatCard = flowLayoutPanel1.Controls
@@ -307,13 +307,84 @@ namespace Proyecto1_Redes.Forms
             }
             else
             {
-                
                 var chatCard = new crlChatCard(UserName, LastMessage);
+                if (isContact)
+                {
+                    chatCard = new crlChatCard(UserName, LastMessage, isContact:true);
+                }
+
                 // add the chat card
                 flowLayoutPanel1.Controls.Add(chatCard);
                 chatCard.Click += NewCard_ChatCardClicked;
+                chatCard.MouseDown += NewCard_ChatCardMouseDown;
             }
             
+        }
+           
+
+        // Handle the event of right click on a chat card
+        private void NewCard_ChatCardMouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                crlChatCard clickedCard = sender as crlChatCard;
+                if (clickedCard != null)
+                {
+                    // add a context menu to the chat card
+                    ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+                    ToolStripMenuItem deleteChat = new ToolStripMenuItem("Delete Chat");
+                    ToolStripMenuItem deleteContact = new ToolStripMenuItem("Delete Contact");
+                    if (clickedCard.isContact)
+                    {
+                        contextMenuStrip.Items.Add(deleteContact);
+                    }
+                    contextMenuStrip.Items.Add(deleteChat);
+                    contextMenuStrip.Show(clickedCard, e.Location);
+                    deleteChat.Click += DeleteChat_Click;
+                    deleteContact.Click += DeleteContact_Click;
+
+                    if (clickedCard.UserName == xmppClient.Jid.Local)
+                    {
+                        deleteContact.Enabled = false;
+                    }
+                }
+            }
+        }
+
+        private async void DeleteContact_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            ContextMenuStrip contextMenuStrip = menuItem.Owner as ContextMenuStrip;
+            crlChatCard clickedCard = contextMenuStrip.SourceControl as crlChatCard;
+            if (clickedCard != null)
+            {
+                // delete the contact
+                await xmppClient.RemoveRosterItemAsync(clickedCard.UserName + "@alumchat.lol");
+                // remove the chat card
+                flowLayoutPanel1.Controls.Remove(clickedCard);
+                // remove the contact from the roster
+                roster.Remove(clickedCard.UserName);
+                // remove the conversation from the dictionary
+                conversations_DM.Remove(clickedCard.UserName);
+                // show a toast message
+                frmToasMessage toasMessage = new frmToasMessage("success", "Contact deleted");
+            }
+        }
+
+        private void DeleteChat_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            ContextMenuStrip contextMenuStrip = menuItem.Owner as ContextMenuStrip;
+            crlChatCard clickedCard = contextMenuStrip.SourceControl as crlChatCard;
+            if (clickedCard != null)
+            {
+                // remove the chat card
+                flowLayoutPanel1.Controls.Remove(clickedCard);
+                // remove the conversation from the dictionary
+                conversations_DM.Remove(clickedCard.UserName);
+                // show a toast message
+                frmToasMessage toasMessage = new frmToasMessage("success", "Chat deleted");
+            }
         }
 
         // Manejar el evento de clic en una tarjeta de chat

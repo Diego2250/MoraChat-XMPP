@@ -100,6 +100,7 @@
             this.Name = "crlChatCard";
             this.Size = new System.Drawing.Size(190, 87);
             this.Load += new System.EventHandler(this.UserControl1_Load);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.crlChatCard_MouseClick);
             this.MouseEnter += new System.EventHandler(this.crlChatCard_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.crlChatCard_MouseLeave);
             this.ResumeLayout(false);

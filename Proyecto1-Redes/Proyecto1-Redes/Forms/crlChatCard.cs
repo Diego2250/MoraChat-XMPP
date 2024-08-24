@@ -14,6 +14,7 @@ namespace Proyecto1_Redes.Forms
     {
         public string UserName { get; set; }
 
+        public bool isContact { get; }
         private string _chatShow;
         private string _lastMessage;
         private string _status;
@@ -77,13 +78,14 @@ namespace Proyecto1_Redes.Forms
             }
         }
 
-        public crlChatCard(String UserName, string LastMessage, string Status = "Unknown", string chatShow = "Unknown")
+        public crlChatCard(String UserName, string LastMessage, string Status = "Unknown", string chatShow = "Unknown",  bool isContact = false)
         {
             InitializeComponent();
             this.UserName = UserName;
             this.LastMessage = LastMessage;
             this.Status = Status;
             this.chatShow = chatShow;
+            this.isContact = isContact;
             
         }
 
@@ -156,5 +158,9 @@ namespace Proyecto1_Redes.Forms
             animationTimer.Start();
         }
 
+        private void crlChatCard_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
