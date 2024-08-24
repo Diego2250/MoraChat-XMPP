@@ -285,6 +285,7 @@
             this.btSendFile.UseAccentColor = false;
             this.btSendFile.UseVisualStyleBackColor = true;
             this.btSendFile.Visible = false;
+            this.btSendFile.Click += new System.EventHandler(this.btSendFile_Click);
             // 
             // btSendChatMsg
             // 

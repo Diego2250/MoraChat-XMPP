@@ -31,7 +31,6 @@ using XmppDotNet.Extensions.Client.Message;
 using System.Runtime.ConstrainedExecution;
 using System.Xml;
 using MaterialSkin.Controls;
-using Matrix.Xmpp.Client;
 using XmppDotNet.Extensions.Client.Presence;
 using XmppDotNet.Extensions.Client.Disco;
 using XmppDotNet.Xmpp.Muc;
@@ -41,11 +40,11 @@ using Jid = XmppDotNet.Jid;
 using MucManager = Proyecto1_Redes.Classes.MucManager;
 using Presence = XmppDotNet.Xmpp.Base.Presence;
 using XmppClient = XmppDotNet.XmppClient;
-using Matrix.Xml;
-using Matrix.Xmpp.HttpUpload;
-using DiscoInfoIq = Matrix.Xmpp.Client.DiscoInfoIq;
 using DiscoItemsIq = XmppDotNet.Xmpp.Client.DiscoItemsIq;
 using Item = XmppDotNet.Xmpp.Muc.Item;
+using System.Net.Http;
+using Microsoft.Web.WebView2.WinForms;
+using Newtonsoft.Json.Linq;
 
 namespace Proyecto1_Redes.Forms
 {
@@ -415,14 +414,16 @@ namespace Proyecto1_Redes.Forms
             if (result)
             {
                 //add a web browser to the flow layout panel
-                WebBrowser webBrowser = new WebBrowser();
-                webBrowser.Navigate(message);
-                webBrowser.Width = 486;
-                webBrowser.Margin = new Padding(0, 0, 0, 10);
-
-                //flpChat.Controls.Add(webBrowser);
-                flpChat.Invoke(new Action(() => flpChat.Controls.Add(webBrowser)));
-                flpChat.Invoke(new Action(() => flpChat.ScrollControlIntoView(webBrowser)));
+                flpChat.Invoke(new Action(() =>
+                {
+                    var webView = new WebView2();
+                    webView.Source = new Uri(message);
+                    webView.Height = 200;
+                    webView.Width = 486;
+                    webView.Margin = new Padding(0, 0, 0, 10);
+                    flpChat.Controls.Add(webView);
+                    flpChat.ScrollControlIntoView(webView);
+                }));
                 return;
             }
         }
@@ -719,6 +720,67 @@ namespace Proyecto1_Redes.Forms
 
                 btSendChatMsg_Click(sender, e);
             }
+        }
+
+        private void btSendFile_Click(object sender, EventArgs e)
+        {
+            //Open file dialog
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "All files (*.*)|*.*";
+            openFileDialog.Title = "Select a file";
+            openFileDialog.ShowDialog();
+
+            //Get the file path
+            string filePath = openFileDialog.FileName;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            //Get the file name
+            string fileName = openFileDialog.SafeFileName;
+            if (string.IsNullOrEmpty(fileName)) {
+                return;
+            }
+
+            //upload the file to the API redes-markalbrand56.koyeb.app/files/mora the file as a parameter of form-data name files
+            //The file will be uploaded to the server and the server will return the url of the file
+            //The url will be sent as a message to the chat
+            //The url will be displayed as a web browser in the chat
+
+            HttpClient client = new HttpClient();
+
+            //Upload the file
+            client.BaseAddress = new Uri("https://redes-markalbrand56.koyeb.app/files/mora");
+
+            MultipartFormDataContent form = new MultipartFormDataContent();
+            form.Add(new ByteArrayContent(System.IO.File.ReadAllBytes(filePath)), "files", fileName);
+
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress, form).Result;
+            if (response.IsSuccessStatusCode) {
+                string responseResult = response.Content.ReadAsStringAsync().Result;
+                //Get the url from the paths JSON field in the response
+                // ex: {"code":200,"message":"File uploaded successfully","paths":["https://redes-markalbrand56.koyeb.app/files/mora/attach-file.png"]}
+                //Parse the JSON
+                JObject jObject = JObject.Parse(responseResult);
+                //Get the url
+                string url = jObject["paths"][0].ToString();
+
+
+                //send the url as a message
+                tbChatMsg.Text = url;
+                btSendChatMsg_Click(sender, e);
+            }
+            else
+            {
+                Console.WriteLine("Response Code: " + response.StatusCode + Environment.NewLine + "Message: " + response.ReasonPhrase);
+                frmToasMessage toasMessage = new frmToasMessage("error", "Error uploading the file");
+                toasMessage.Show();
+            }
+
+            client.Dispose();
+
+
         }
     }
 }
