@@ -988,12 +988,18 @@ namespace Proyecto1_Redes.Forms
             {
                 string roomName = tbRoomName.Text;
 
+                //Create the room
                 await MucManager.EnterRoomAsync(roomName + "@conference.alumchat.lol", xmppClient.Jid);
 
                 //Make the room persistent
                 MakeRoomPersitent(new Jid(roomName + "@conference.alumchat.lol"));
 
-                frmToasMessage toasMessage = new frmToasMessage("success", "Room created");
+                //send a message to the room
+                await xmppClient.SendGroupChatMessageAsync(roomName + "@conference.alumchat.lol", "Room created!");
+
+                tbRoomName.Text = "";
+
+                frmToasMessage toasMessage = new frmToasMessage("success", "Room created!");
                 toasMessage.Show();
             }
             catch (Exception exception)
