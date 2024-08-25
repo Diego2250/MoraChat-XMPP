@@ -60,8 +60,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btDeleteAcct = new MaterialSkin.Controls.MaterialButton();
             this.btLogOut = new MaterialSkin.Controls.MaterialButton();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpNotificatons = new System.Windows.Forms.FlowLayoutPanel();
             this.lbJid = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.tcChat.SuspendLayout();
             this.tabDM.SuspendLayout();
             this.materialCard1.SuspendLayout();
@@ -73,12 +74,13 @@
             this.tabProfile.SuspendLayout();
             this.materialCard2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.flpNotificatons.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcChat
             // 
-            this.tcChat.Controls.Add(this.tabDM);
             this.tcChat.Controls.Add(this.tabChats);
+            this.tcChat.Controls.Add(this.tabDM);
             this.tcChat.Controls.Add(this.tabOthers);
             this.tcChat.Controls.Add(this.tabProfile);
             this.tcChat.Depth = 0;
@@ -420,9 +422,9 @@
             this.materialLabel3.Location = new System.Drawing.Point(109, 27);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(172, 19);
+            this.materialLabel3.Size = new System.Drawing.Size(181, 19);
             this.materialLabel3.TabIndex = 7;
-            this.materialLabel3.Text = "Suscribe to a ChatRoom";
+            this.materialLabel3.Text = "Subscribe to a ChatRoom";
             // 
             // btsuscribeRoom
             // 
@@ -436,9 +438,9 @@
             this.btsuscribeRoom.MouseState = MaterialSkin.MouseState.HOVER;
             this.btsuscribeRoom.Name = "btsuscribeRoom";
             this.btsuscribeRoom.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btsuscribeRoom.Size = new System.Drawing.Size(89, 36);
+            this.btsuscribeRoom.Size = new System.Drawing.Size(99, 36);
             this.btsuscribeRoom.TabIndex = 6;
-            this.btsuscribeRoom.Text = "Suscribe";
+            this.btsuscribeRoom.Text = "Subscribe";
             this.btsuscribeRoom.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btsuscribeRoom.UseAccentColor = false;
             this.btsuscribeRoom.UseVisualStyleBackColor = true;
@@ -544,7 +546,7 @@
             this.materialCard2.Controls.Add(this.pictureBox1);
             this.materialCard2.Controls.Add(this.btDeleteAcct);
             this.materialCard2.Controls.Add(this.btLogOut);
-            this.materialCard2.Controls.Add(this.flowLayoutPanel2);
+            this.materialCard2.Controls.Add(this.flpNotificatons);
             this.materialCard2.Controls.Add(this.lbJid);
             this.materialCard2.Depth = 0;
             this.materialCard2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -556,6 +558,7 @@
             this.materialCard2.Padding = new System.Windows.Forms.Padding(14);
             this.materialCard2.Size = new System.Drawing.Size(827, 466);
             this.materialCard2.TabIndex = 0;
+            this.materialCard2.Paint += new System.Windows.Forms.PaintEventHandler(this.materialCard2_Paint);
             // 
             // btSetPresenceMsg
             // 
@@ -678,17 +681,19 @@
             this.btLogOut.UseVisualStyleBackColor = true;
             this.btLogOut.Click += new System.EventHandler(this.btLogOut_Click);
             // 
-            // flowLayoutPanel2
+            // flpNotificatons
             // 
-            this.flowLayoutPanel2.AutoScroll = true;
-            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(14, 14);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(221, 438);
-            this.flowLayoutPanel2.TabIndex = 6;
-            this.flowLayoutPanel2.WrapContents = false;
+            this.flpNotificatons.AutoScroll = true;
+            this.flpNotificatons.AutoSize = true;
+            this.flpNotificatons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flpNotificatons.Controls.Add(this.materialLabel4);
+            this.flpNotificatons.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flpNotificatons.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpNotificatons.Location = new System.Drawing.Point(14, 14);
+            this.flpNotificatons.Name = "flpNotificatons";
+            this.flpNotificatons.Size = new System.Drawing.Size(220, 438);
+            this.flpNotificatons.TabIndex = 6;
+            this.flpNotificatons.WrapContents = false;
             // 
             // lbJid
             // 
@@ -704,6 +709,19 @@
             this.lbJid.Text = "mor21146@alumchat.lol";
             this.lbJid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbJid.Paint += new System.Windows.Forms.PaintEventHandler(this.lbJid_Paint);
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel4.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            this.materialLabel4.Location = new System.Drawing.Point(3, 0);
+            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(210, 23);
+            this.materialLabel4.TabIndex = 0;
+            this.materialLabel4.Text = "Notifications";
+            this.materialLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MoraChat
             // 
@@ -734,6 +752,7 @@
             this.materialCard2.ResumeLayout(false);
             this.materialCard2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.flpNotificatons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -753,7 +772,7 @@
         private MaterialSkin.Controls.MaterialSwitch swGroupChatSM;
         private MaterialSkin.Controls.MaterialCard materialCard3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.FlowLayoutPanel flpNotificatons;
         private MaterialSkin.Controls.MaterialLabel lbJid;
         private MaterialSkin.Controls.MaterialButton btDeleteAcct;
         private MaterialSkin.Controls.MaterialButton btLogOut;
@@ -774,5 +793,6 @@
         private MaterialSkin.Controls.MaterialButton btSendChatMsg;
         private MaterialSkin.Controls.MaterialTextBox tbChatMsg;
         private MaterialSkin.Controls.MaterialButton btSendFile;
+        private MaterialSkin.Controls.MaterialLabel materialLabel4;
     }
 }

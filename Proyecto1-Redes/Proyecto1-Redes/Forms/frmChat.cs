@@ -45,6 +45,7 @@ using Item = XmppDotNet.Xmpp.Muc.Item;
 using System.Net.Http;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
+using XmppDotNet.Extensions.Client.Subscription;
 using XmppDotNet.Xmpp.MessageArchiving;
 using XmppDotNet.Xmpp.Register;
 
@@ -73,10 +74,12 @@ namespace Proyecto1_Redes.Forms
             xmppClient
                 .XmppXElementReceived
                 .Where(el =>
-                    el.OfType<Message>()
-                    && el.Cast<Message>().Body != null)
+                    el.OfType<Message>())
                 .Subscribe(el =>
                 {
+                    //verify if message is group request
+                    // ex: <message to="mor21146@alumchat.lol" id="9f70f4fb-0204-4b90-81b0-d63d041b85e2" from="mor1234@alumchat.lol/gajim.MF64DHHR" xmlns="jabber:client"><x xmlns="jabber:x:conference" jid="ibupa@conference.alumchat.lol" /></message>
+                    
                     // Código para manejar mensajes de chat
                     if (el.Cast<Message>().Type == MessageType.Chat)
                     {
@@ -153,6 +156,37 @@ namespace Proyecto1_Redes.Forms
                     && el.Cast<Presence>().Type != PresenceType.Error)
                 .Subscribe(el =>
                 {
+                    if (el.Cast<Presence>().Type == PresenceType.Subscribe)
+                    {
+                        var from = el.Cast<Presence>().From.ToString();
+                        var user = from.Split('@')[0];
+                        crlNotification notification = new crlNotification(user, "Wants to add you as a contact", "subscription", xmppClient, flpNotificatons);
+                        //flpNotificatons.Controls.Add(notification);
+                        flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
+                    }
+
+                    if (el.Cast<Presence>().Type == PresenceType.Subscribed)
+                    {
+                        var from = el.Cast<Presence>().From.ToString();
+                        var user = from.Split('@')[0];
+                        crlNotification notification = new crlNotification(user, "Accepted your request", "subscribed", xmppClient, flpNotificatons);
+                        flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
+                        frmToasMessage toasMessage = new frmToasMessage("success", user + " accepted your request");
+                        toasMessage.Show();
+                    }
+
+                    if (el.Cast<Presence>().Type == PresenceType.Unsubscribe)
+                    {
+                        var from = el.Cast<Presence>().From.ToString();
+                        var user = from.Split('@')[0];
+                        crlNotification notification = new crlNotification(user, "Unsubscribed", "unsubscribed", xmppClient, flpNotificatons);
+                        flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
+                        frmToasMessage toasMessage = new frmToasMessage("info", user + " unsubscribed");
+                        toasMessage.Show();
+                    }
+
+                    
+
                     if (el.Cast<Presence>().Type == PresenceType.Unavailable)
                     {
                         var from = el.Cast<Presence>().From.ToString();
@@ -626,6 +660,14 @@ namespace Proyecto1_Redes.Forms
 
         private async void btDeleteAcct_Click(object sender, EventArgs e)
         {
+            
+            //show a confirmation dialog
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete your account?", "Delete Account", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
+
             // build this xml 
             //<iq xmlns="jabber:client" id="agsXMPP_1" to="kevin-laptop"><query xmlns="jabber:iq:register"><remove /></query></iq>
 
@@ -888,6 +930,11 @@ namespace Proyecto1_Redes.Forms
 
             client.Dispose();
 
+
+        }
+
+        private void materialCard2_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }
