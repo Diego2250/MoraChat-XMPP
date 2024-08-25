@@ -30,6 +30,7 @@ namespace Proyecto1_Redes.Classes
 
         public XmppClient XmppClient { get; internal set; }
 
+
         public async Task<Iq> RequestRoomConfigurationAsync(Jid room)
         {
             var iq = new OwnerIq { Type = IqType.Get, To = room };

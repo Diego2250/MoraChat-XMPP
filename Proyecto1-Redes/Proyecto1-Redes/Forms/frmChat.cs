@@ -845,6 +845,7 @@ namespace Proyecto1_Redes.Forms
                 Console.WriteLine(ex.Stanza);
                 throw;
             }
+
         }
 
 
@@ -979,6 +980,68 @@ namespace Proyecto1_Redes.Forms
         private void materialCard2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private async void btCreateRoom_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string roomName = tbRoomName.Text;
+
+                await MucManager.EnterRoomAsync(roomName + "@conference.alumchat.lol", xmppClient.Jid);
+
+                //Make the room persistent
+                MakeRoomPersitent(new Jid(roomName + "@conference.alumchat.lol"));
+
+                frmToasMessage toasMessage = new frmToasMessage("success", "Room created");
+                toasMessage.Show();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
+        private async void MakeRoomPersitent(Jid roomJid)
+        {
+            // Step 1, request the room configuration
+            var iq = await MucManager.RequestRoomConfigurationAsync(roomJid);
+            if (iq.Type == IqType.Result) // only proceed on result
+            {
+                // Step 2 and 3, parsing the current config and
+                // creating the result is done in the same loop here.
+                var xdata = iq.Query.Element<Data>();
+                var xDataResult = new Data
+                {
+                    Type = FormType.Submit
+                };
+
+                foreach (var field in xdata.GetFields())
+                {
+                    var retField = new Field()
+                    {
+                        Type = field.Type, // keep the type
+                        Var = field.Var // keep the var
+                    };
+
+                    // we are changing the muc#roomconfig_persistentroom only
+                    // other fields get copied only with the existing values            
+                    if (field.Var == "muc#roomconfig_persistentroom")
+                        retField.AddValue(true);
+                    else
+                        retField.AddValues(field.GetValues().ToArray());
+
+                    xDataResult.AddField(retField);
+                }
+
+                // Step 4, submit the changed configuration back to the server (room)
+                var submitIq = await MucManager.SubmitRoomConfigurationAsync(roomJid, xDataResult);
+                if (submitIq.Type == IqType.Result)
+                    Console.WriteLine("Room is now persistent");
+                else
+                    Console.WriteLine("something went wrong");
+            }
         }
     }
 }
