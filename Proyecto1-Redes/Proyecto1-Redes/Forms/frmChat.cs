@@ -43,6 +43,7 @@ using XmppClient = XmppDotNet.XmppClient;
 using DiscoItemsIq = XmppDotNet.Xmpp.Client.DiscoItemsIq;
 using Item = XmppDotNet.Xmpp.Muc.Item;
 using System.Net.Http;
+using System.Xml.Linq;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
 using XmppDotNet.Extensions.Client.Subscription;
@@ -66,8 +67,6 @@ namespace Proyecto1_Redes.Forms
         {
             this.xmppClient = XmppClient;
 
-            // create a custom stanza to get rooms
-            // this is a custom stanza to get the rooms
 
             LoadAsync();
 
@@ -77,11 +76,44 @@ namespace Proyecto1_Redes.Forms
                     el.OfType<Message>())
                 .Subscribe(el =>
                 {
+                    //convert the element to a xml 
+                    XElement xml = XElement.Parse(el.ToString());
                     //verify if message is group request
                     // ex: <message to="mor21146@alumchat.lol" id="9f70f4fb-0204-4b90-81b0-d63d041b85e2" from="mor1234@alumchat.lol/gajim.MF64DHHR" xmlns="jabber:client"><x xmlns="jabber:x:conference" jid="ibupa@conference.alumchat.lol" /></message>
-                    
+                    if (xml.LastNode is XElement && xml.LastNode.ToString().Contains("xmlns=\"jabber:x:conference\""))
+                    {
+                        // Get the group chat room jid from the <x> element
+                        XElement xElement = xml.Descendants().FirstOrDefault(e => e.Name.LocalName == "x" && e.Attribute("xmlns")?.Value == "jabber:x:conference");
+
+                        if (xElement != null)
+                        {
+                            // Obtain the jid of the group chat room
+                            string roomJid = xElement.Attribute("jid")?.Value;
+
+                            // Get the 'from' attribute (who sent the invitation)
+                            string fromJid = xml.Attribute("from")?.Value;
+                            fromJid = fromJid.Split('@')[0];
+
+                            if (!string.IsNullOrEmpty(roomJid) && !string.IsNullOrEmpty(fromJid))
+                            {
+                                crlNotification notification = new crlNotification(fromJid, "Invitation to room" + Environment.NewLine + roomJid,
+                                    "group invitation", xmppClient, flpNotificatons, roomJid);
+                                flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
+
+                                
+                                this.Invoke(new Action(() =>
+                                {
+                                    frmToasMessage toasMessage = new frmToasMessage("info", "New notification!");
+                                    toasMessage.Show();
+                                }));
+                            }
+                        }
+
+                    }
+
+
                     // Código para manejar mensajes de chat
-                    if (el.Cast<Message>().Type == MessageType.Chat)
+                    if (el.Cast<Message>().Type == MessageType.Chat && el.Cast<Message>().Body != null)
                     {
                         var message = el.Cast<Message>();
                         var from = message.From.ToString();
@@ -117,7 +149,7 @@ namespace Proyecto1_Redes.Forms
                         }));
                     }
 
-                    if (el.Cast<Message>().Type == MessageType.GroupChat)
+                    if (el.Cast<Message>().Type == MessageType.GroupChat && el.Cast<Message>().Body != null)
                     {
                         var message = el.Cast<Message>();
                         var from = message.From.ToString();
@@ -163,6 +195,11 @@ namespace Proyecto1_Redes.Forms
                         crlNotification notification = new crlNotification(user, "Wants to add you as a contact", "subscription", xmppClient, flpNotificatons);
                         //flpNotificatons.Controls.Add(notification);
                         flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
+                        this.Invoke(new Action(() =>
+                        {
+                            frmToasMessage toasMessage = new frmToasMessage("info", "New notification!");
+                            toasMessage.Show();
+                        }));
                     }
 
                     if (el.Cast<Presence>().Type == PresenceType.Subscribed)
@@ -171,8 +208,11 @@ namespace Proyecto1_Redes.Forms
                         var user = from.Split('@')[0];
                         crlNotification notification = new crlNotification(user, "Accepted your request", "subscribed", xmppClient, flpNotificatons);
                         flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
-                        frmToasMessage toasMessage = new frmToasMessage("success", user + " accepted your request");
-                        toasMessage.Show();
+                        this.Invoke(new Action(() =>
+                        {
+                            frmToasMessage toasMessage = new frmToasMessage("info", "New notification!");
+                            toasMessage.Show();
+                        }));
                     }
 
                     if (el.Cast<Presence>().Type == PresenceType.Unsubscribe)
@@ -181,8 +221,11 @@ namespace Proyecto1_Redes.Forms
                         var user = from.Split('@')[0];
                         crlNotification notification = new crlNotification(user, "Unsubscribed", "unsubscribed", xmppClient, flpNotificatons);
                         flpNotificatons.Invoke(new Action(() => flpNotificatons.Controls.Add(notification)));
-                        frmToasMessage toasMessage = new frmToasMessage("info", user + " unsubscribed");
-                        toasMessage.Show();
+                        this.Invoke(new Action(() =>
+                        {
+                            frmToasMessage toasMessage = new frmToasMessage("info", "New notification!");
+                            toasMessage.Show();
+                        }));
                     }
 
                     

@@ -39,7 +39,7 @@
             // lblMessage
             // 
             this.lblMessage.AutoSize = true;
-            this.lblMessage.Location = new System.Drawing.Point(10, 41);
+            this.lblMessage.Location = new System.Drawing.Point(11, 37);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(35, 13);
             this.lblMessage.TabIndex = 9;
@@ -91,7 +91,7 @@
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.lblUserName);
             this.Name = "crlNotification";
-            this.Size = new System.Drawing.Size(215, 76);
+            this.Size = new System.Drawing.Size(226, 76);
             this.Load += new System.EventHandler(this.crlNotification_Load);
             this.Enter += new System.EventHandler(this.crlNotification_Enter);
             this.Leave += new System.EventHandler(this.crlNotification_Leave);

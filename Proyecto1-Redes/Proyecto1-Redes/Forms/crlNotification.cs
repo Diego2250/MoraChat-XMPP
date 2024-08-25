@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto1_Redes.Classes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,18 +17,22 @@ namespace Proyecto1_Redes.Forms
     {
         XmppClient xmppClient;
 
-        string userName, msg, type;
+        string userName, msg, type, roomJid;
 
         FlowLayoutPanel parentPanel; // Referencia al FlowLayoutPanel
 
-        public crlNotification(string userName, string msg, string type, XmppClient xmppClient, FlowLayoutPanel parentPanel)
+        private MucManager MucManager;
+
+        public crlNotification(string userName, string msg, string type, XmppClient xmppClient, FlowLayoutPanel parentPanel, string roomJid = "")
         {
             InitializeComponent();
             this.xmppClient = xmppClient;
             this.userName = userName;
             this.msg = msg;
+            this.roomJid = roomJid;
             this.type = type;
             this.parentPanel = parentPanel;
+            MucManager = new MucManager(xmppClient);
         }
 
         private void RemoveControl()
@@ -39,13 +44,25 @@ namespace Proyecto1_Redes.Forms
             }
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private async void pictureBox1_Click(object sender, EventArgs e)
         {
             if (type == "subscription")
             {
-                xmppClient.ApproveSubscriptionRequestAsync(userName + "@alumchat.lol");
+                await xmppClient.ApproveSubscriptionRequestAsync(userName + "@alumchat.lol");
                 RemoveControl();
                 frmToasMessage toasMessage = new frmToasMessage("info", "Subscription request approved");
+                toasMessage.Show();
+            }
+
+            if (type == "group invitation")
+            {
+                var roomId = new Jid(roomJid);
+
+                await MucManager.EnterRoomAsync(roomId, xmppClient.Jid.Local);
+
+
+                RemoveControl();
+                frmToasMessage toasMessage = new frmToasMessage("info", "Invitation to room approved!");
                 toasMessage.Show();
             }
         }
@@ -122,11 +139,18 @@ namespace Proyecto1_Redes.Forms
                 frmToasMessage toasMessage = new frmToasMessage("info", "Subscription request denied");
                 toasMessage.Show();
             }
+
+            if (type == "group invitation")
+            {
+                RemoveControl();
+                frmToasMessage toasMessage = new frmToasMessage("info", "Invitation to room denied");
+                toasMessage.Show();
+            }
         }
 
         private void crlNotification_Load(object sender, EventArgs e)
         {
-            lblUserName.Text = userName;
+            lblUserName.Text = "From: " + userName;
             lblMessage.Text = msg;
             if (type == "unsubscribed" || type == "subscribed")
             {
