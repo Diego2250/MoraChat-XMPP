@@ -133,10 +133,10 @@
   <ItemGroup>
     <Compile Include="Classes\MamResult.cs" />
     <Compile Include="Classes\MucManager.cs" />
-    <Compile Include="Forms\crlNotification.cs">
+    <Compile Include="User controls\crlNotification.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\crlNotification.Designer.cs">
+    <Compile Include="User controls\crlNotification.Designer.cs">
       <DependentUpon>crlNotification.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Form1.cs">
@@ -152,10 +152,10 @@
     <Compile Include="Forms\frmChat.Designer.cs">
       <DependentUpon>frmChat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\crlChatCard.cs">
+    <Compile Include="User controls\crlChatCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\crlChatCard.Designer.cs">
+    <Compile Include="User controls\crlChatCard.Designer.cs">
       <DependentUpon>crlChatCard.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmToasMessage.cs">
@@ -166,7 +166,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\crlNotification.resx">
+    <EmbeddedResource Include="User controls\crlNotification.resx">
       <DependentUpon>crlNotification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1.resx">
@@ -175,7 +175,7 @@
     <EmbeddedResource Include="Forms\frmChat.resx">
       <DependentUpon>frmChat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\crlChatCard.resx">
+    <EmbeddedResource Include="User controls\crlChatCard.resx">
       <DependentUpon>crlChatCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmToasMessage.resx">
@@ -247,6 +247,7 @@
   <ItemGroup>
     <None Include="Resources\cancel.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2730-prerelease\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2730-prerelease\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
