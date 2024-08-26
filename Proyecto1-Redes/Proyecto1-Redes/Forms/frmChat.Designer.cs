@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MoraChat));
             this.tcChat = new MaterialSkin.Controls.MaterialTabControl();
             this.tabChats = new System.Windows.Forms.TabPage();
             this.materialCard3 = new MaterialSkin.Controls.MaterialCard();
@@ -276,6 +277,7 @@
             this.swGroupChatSM.TabIndex = 11;
             this.swGroupChatSM.Text = "Send to a group chat?";
             this.swGroupChatSM.UseVisualStyleBackColor = true;
+            this.swGroupChatSM.Visible = false;
             this.swGroupChatSM.CheckedChanged += new System.EventHandler(this.materialSwitch1_CheckedChanged);
             // 
             // tbMessageSM
@@ -810,6 +812,7 @@
             this.ClientSize = new System.Drawing.Size(847, 565);
             this.Controls.Add(this.tcChat);
             this.DrawerTabControl = this.tcChat;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(847, 565);
             this.MinimumSize = new System.Drawing.Size(847, 565);
             this.Name = "MoraChat";

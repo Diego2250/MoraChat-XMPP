@@ -1,54 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using XmppDotNet;
 using XmppDotNet.Extensions.Client.Roster;
 using XmppDotNet.Xml;
 using XmppDotNet.Xmpp;
-using XmppDotNet.Xmpp.Client;
-using XmppDotNet.Xmpp.MessageArchiveManagement;
-using XmppDotNet.Xmpp.ResultSetManagement;
 using XmppDotNet.Xmpp.Roster;
 using XmppDotNet.Xmpp.XData;
-using XmppDotNet.Xmpp.Base;
-using Iq = XmppDotNet.Xmpp.Base.Iq;
-using RosterItem = XmppDotNet.Xmpp.Roster.RosterItem;
 using Message = XmppDotNet.Xmpp.Base.Message;
 using MaterialSkin;
 using XmppDotNet.Extensions.Client.Message;
-using System.Runtime.ConstrainedExecution;
-using System.Xml;
 using MaterialSkin.Controls;
 using XmppDotNet.Extensions.Client.Presence;
-using XmppDotNet.Extensions.Client.Disco;
-using XmppDotNet.Xmpp.Muc;
-using XmppDotNet.Extensions.Client.PubSub;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Jid = XmppDotNet.Jid;
 using MucManager = Proyecto1_Redes.Classes.MucManager;
 using Presence = XmppDotNet.Xmpp.Base.Presence;
 using XmppClient = XmppDotNet.XmppClient;
 using DiscoItemsIq = XmppDotNet.Xmpp.Client.DiscoItemsIq;
-using Item = XmppDotNet.Xmpp.Muc.Item;
 using System.Net.Http;
 using System.Xml.Linq;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
-using XmppDotNet.Extensions.Client.Subscription;
-using XmppDotNet.Xmpp.MessageArchiving;
-using XmppDotNet.Xmpp.Register;
 
 namespace Proyecto1_Redes.Forms
 {
@@ -164,7 +140,7 @@ namespace Proyecto1_Redes.Forms
 
                         conversations_DM[room].Add(new List<string> { user, body });
 
-                        flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body)));
+                        flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(room, body, isGroup: true)));
                         if (currectChat == room)
                         {
                             if (user == xmppClient.Jid.Local)
@@ -371,7 +347,7 @@ namespace Proyecto1_Redes.Forms
             
         }
 
-        private void Crate_ChatCard(string UserName, String LastMessage, bool isContact = false)
+        private void Crate_ChatCard(string UserName, String LastMessage, bool isContact = false, bool isGroup = false)
         {
             // verify if the chat card already exists
             var existingChatCard = flowLayoutPanel1.Controls
@@ -388,6 +364,10 @@ namespace Proyecto1_Redes.Forms
                 if (isContact)
                 {
                     chatCard = new crlChatCard(UserName, LastMessage, isContact:true);
+                }
+                if (isGroup)
+                {
+                    chatCard = new crlChatCard(UserName, LastMessage, isGroup:true);
                 }
 
                 // add the chat card
@@ -448,7 +428,7 @@ namespace Proyecto1_Redes.Forms
             }
         }
 
-        private void DeleteChat_Click(object sender, EventArgs e)
+        private async void DeleteChat_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
             ContextMenuStrip contextMenuStrip = menuItem.Owner as ContextMenuStrip;
@@ -459,6 +439,11 @@ namespace Proyecto1_Redes.Forms
                 flowLayoutPanel1.Controls.Remove(clickedCard);
                 // remove the conversation from the dictionary
                 conversations_DM.Remove(clickedCard.UserName);
+                //if is group chat, leave the room
+                if (clickedCard.UserName.Contains("@conference.alumchat.lol"))
+                {
+                    await MucManager.ExitRoomAsync(new Jid(clickedCard.UserName), xmppClient.Jid.Local);
+                }
                 // show a toast message
                 frmToasMessage toasMessage = new frmToasMessage("success", "Chat deleted");
             }
@@ -621,12 +606,38 @@ namespace Proyecto1_Redes.Forms
                 String message = tbMessageSM.Text;
                 if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(message))
                 {
-                    MessageBox.Show("Enter a username and message");
+                    //MessageBox.Show("Enter a username and message");
+                    frmToasMessage toasMessage = new frmToasMessage("error", "Enter a username and message");
+                    toasMessage.Show();
+                    return;
+                }
+                if (swGroupChatSM.Checked)
+                {
+                    // send a group chat message
+                    await xmppClient.SendGroupChatMessageAsync(user, message);
+                    //MessageBox.Show("Message sent");
+                    frmToasMessage tm = new frmToasMessage("success", "Message sent");
+                    tm.Show();
+                    tbUserSM.Text = "";
+                    tbMessageSM.Text = "";
+                    user = user.Split('@')[0];
+
+                    // Add the message to the conversation
+                    if (!conversations_DM.ContainsKey(user))
+                    {
+                        conversations_DM[user] = new List<List<string>>();
+                    }
+
+                    conversations_DM[user].Add(new List<string> { xmppClient.Jid.Local, message });
+
+                    flowLayoutPanel1.Invoke(new Action(() => Crate_ChatCard(user, message)));
                     return;
                 }
                 // send a chat message
                 await xmppClient.SendChatMessageAsync(user, message);
-                MessageBox.Show("Message sent");
+                //MessageBox.Show("Message sent");
+                frmToasMessage toasMessage1 = new frmToasMessage("success", "Message sent");
+                toasMessage1.Show();
                 tbUserSM.Text = "";
                 tbMessageSM.Text = "";
                 user = user.Split('@')[0];
@@ -643,7 +654,11 @@ namespace Proyecto1_Redes.Forms
             }
             catch (XmppException ex)
             {
-                MessageBox.Show(ex.Stanza.Value);
+               // MessageBox.Show(ex.Stanza.Value);
+               frmToasMessage toasMessage = new frmToasMessage("error", ex.Message);
+               toasMessage.Show();
+               Console.WriteLine(ex.Stanza);
+               throw;
             }
 
         }
@@ -832,6 +847,8 @@ namespace Proyecto1_Redes.Forms
                 var RoomId = new Jid(cmbRooms.SelectedItem.ToString());
 
                 await MucManager.EnterRoomAsync(RoomId, xmppClient.Jid.Local);
+
+                await xmppClient.SendGroupChatMessageAsync(RoomId, "I just joined the group!");
 
                 frmToasMessage toasMessage = new frmToasMessage("success", "Room joined");
                 toasMessage.Show();

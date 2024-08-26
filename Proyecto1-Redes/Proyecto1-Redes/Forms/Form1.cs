@@ -100,12 +100,20 @@ namespace Proyecto1_Redes
             try
             {
                 await xmppClient.ConnectAsync();
-                MessageBox.Show("Account created successfully!");
+                //MessageBox.Show("Account created successfully!");
+                frmToasMessage toasMessage = new frmToasMessage("success", "Account created successfully!");
+                toasMessage.Show();
+
+                swCreateAcct.Checked = false;
+
 
             }
             catch (XmppDotNet.RegisterException e)
             {
-                MessageBox.Show($"Error while creating account: {e.Stanza.LastNode.ToString()}");
+                //MessageBox.Show($"Error while creating account: {e.Stanza.LastNode.ToString()}");
+                frmToasMessage toasMessage = new frmToasMessage("error", "Error while creating account");
+                toasMessage.Show();
+
             }
 
             return;

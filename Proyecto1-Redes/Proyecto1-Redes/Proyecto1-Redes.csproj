@@ -247,7 +247,9 @@
   <ItemGroup>
     <None Include="Resources\cancel.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\MoraChat %283%29.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2730-prerelease\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2730-prerelease\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
