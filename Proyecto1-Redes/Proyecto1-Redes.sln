@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proyecto1-Redes", "Proyecto1-Redes\Proyecto1-Redes.csproj", "{2620BFF6-779C-45A7-A7C6-6E3CE20747BC}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MoraChatSetUp", "MoraChatSetUp\MoraChatSetUp.vdproj", "{924577D3-3A6D-43A8-8E98-209492CA6C23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{2620BFF6-779C-45A7-A7C6-6E3CE20747BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2620BFF6-779C-45A7-A7C6-6E3CE20747BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2620BFF6-779C-45A7-A7C6-6E3CE20747BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{924577D3-3A6D-43A8-8E98-209492CA6C23}.Debug|Any CPU.ActiveCfg = Debug
+		{924577D3-3A6D-43A8-8E98-209492CA6C23}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
