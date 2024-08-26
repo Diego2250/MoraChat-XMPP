@@ -10,6 +10,7 @@ MoraChat is a messaging application that supports XMPP (Extensible Messaging and
 - **Subscription Management**: Approve or deny contact and group chat requests.
 - **Toast Notifications**: Get instant notifications for new messages and group invitations.
 - **User-Friendly Interface**: Intuitive UI with dynamic controls like chat cards and notifications.
+- **File Transfer**: MoraChat supports file transfer between users by utilizing an external file server. This allows you to easily share files with your contacts. For more details on the file server used in this application, you can find the documentation [here](https://github.com/markalbrand56/XMPP-File-Server).
 
 ## Screenshots
 
