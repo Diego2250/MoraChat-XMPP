@@ -55,12 +55,12 @@ MoraChat is a messaging application that supports XMPP (Extensible Messaging and
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Diego2250/MoraChat.git
-   cd MoraChat
+   git clone https://github.com/Diego2250/MoraChat-XMPP.git
+   cd MoraChat-XMPP
    ```
 
 2. **Open the solution in Visual Studio**:
-   - Navigate to the MoraChat.sln file and open it with Visual Studio.
+   - Navigate to the MoraChat-XMPP.sln file and open it with Visual Studio.
 
 3. **Restore NuGet packages**:
    - Right-click on the solution in Visual Studio and select "Restore NuGet Packages."
