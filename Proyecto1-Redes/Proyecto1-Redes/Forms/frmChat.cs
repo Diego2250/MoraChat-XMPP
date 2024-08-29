@@ -1060,10 +1060,7 @@ namespace Proyecto1_Redes.Forms
 
                 // Step 4, submit the changed configuration back to the server (room)
                 var submitIq = await MucManager.SubmitRoomConfigurationAsync(roomJid, xDataResult);
-                if (submitIq.Type == IqType.Result)
-                    Console.WriteLine("Room is now persistent");
-                else
-                    Console.WriteLine("something went wrong");
+                Console.WriteLine(submitIq.Type == IqType.Result ? "Room is now persistent" : "something went wrong");
             }
         }
     }
