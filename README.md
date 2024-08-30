@@ -28,11 +28,11 @@ MoraChat is a messaging application that supports XMPP (Extensible Messaging and
 
 -  **Aditional Featurtes**
 
-  ![image](https://github.com/user-attachments/assets/79cccbcd-0f67-47fd-8b74-46fb489eb46d)
+   ![image](https://github.com/user-attachments/assets/79cccbcd-0f67-47fd-8b74-46fb489eb46d)
 
 -  **Profile**
 
-  ![image](https://github.com/user-attachments/assets/58ab871e-b05f-4a68-9833-3356a50865e2)
+   ![image](https://github.com/user-attachments/assets/58ab871e-b05f-4a68-9833-3356a50865e2)
 
 
 ## Getting Started
@@ -46,7 +46,7 @@ MoraChat is a messaging application that supports XMPP (Extensible Messaging and
 
 ### Installation
 1. **Download the Setup File**:
-   - Navigate to the MoraSetUp folder in the repository
+   - Navigate to **Releases** in the repository
    - Download the `MoraChatSetUp.msi`
    - Run the installation wizard
 
