@@ -6,7 +6,7 @@ MoraChat is a messaging application that supports XMPP (Extensible Messaging and
 
 - **Create User**: Easily create your own user account.
 - **Instant Messaging**: Send and receive one-on-one chat messages.
-- **Group Chats**: Participate in group chats and receive group invitations.
+- **Group Chats**: Participate and create group chats and receive group invitations.
 - **Subscription Management**: Approve or deny contact and group chat requests.
 - **Toast Notifications**: Get instant notifications for new messages and group invitations.
 - **User-Friendly Interface**: Intuitive UI with dynamic controls like chat cards and notifications.
