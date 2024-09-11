@@ -105,6 +105,28 @@ If you would like to contribute to MoraChat, please follow these steps:
 4. **Push to the branch**: `git push origin feature-name`
 5. **Create a pull request**.
 
+### Difficulties
+
+- **Limited Documentation for xmppDotNet:** The use of the xmppDotNet library was challenging due to the limited official documentation available. As a result, many of the implementations were done through trial and error on multiple occasions, and were inspired by other XMPP implementations in different programming languages.
+
+- **Learning Curve with C#:** C# is a language that interests me for my professional future, which is why I chose it for this project. However, it was difficult because I am not fully proficient in the language as I am still learning how to use it.
+
+- **Time Constraints:** Time was the biggest challenge I encountered because it was a fairly long project with relatively little time to complete, and it coincided with other large projects from other classes.
+
+- **Handling Subscriptions and Notifications:** The implementation of managing subscription requests and notifications within custom controls in a FlowLayoutPanel presented challenges, such as dynamically removing controls and updating the visual interface without affecting the application's performance.
+
+
+### Learned Lessons
+
+- **Importance of Thorough Documentation Review:** Working with XmppDotNet Library highlighted the importance of understanding the available documentation and seeking alternative resources when official documentation is lacking. This experience taught me the value of researching community forums, GitHub repositories, and other implementation examples when facing challenges.
+
+- **Patience and Persistence with Trial and Error:** Implementing XMPP functionalities with limited guidance and documentation required a lot of trial and error, reinforcing the lesson that patience and persistence are key when learning new technologies.
+
+- **Time Management Skills:** Balancing this project alongside other academic commitments taught me how crucial effective time management is. Planning and prioritizing tasks helped in managing a heavy workload.
+
+- **Adapting to New Technologies:** Developing a complex project in C#, a language I’m still learning to use, was a significant challenge but also a valuable learning opportunity. It underscored the importance of adaptability and the continuous learning required in software development.
+
+
 ### License
 
 MoraChat is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
